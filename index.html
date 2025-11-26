@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcuticon" type="image/x-icon" href="favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,30 +15,18 @@
         body {
             font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, Arial, Helvetica, Verdana, sans-serif;
             background-color: #f7f9fb;
-        }
-        .page-wrapper {
-            padding: 1rem;
-        }
-        @media (max-width: 767px) {
-            .page-wrapper {
-                padding: 2rem;
-            }
+            margin: 0px;
         }
         .main-container {
-            max-width: 100%;
+            width: 100%;
             margin-left: auto;
             margin-right: auto;
             background-color: #ffffff;
             border-radius: 4px;
             padding: 1.5rem;
         }
-        @media (max-width: 767px) {
-            .main-container {
-                padding: 2.5rem;
-            }
-        }
         .header-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             color: #505050;
             margin-bottom: 10px;
@@ -51,7 +40,7 @@
             border-radius: 4px;
         }
         .owner-label {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
             color: #16A34A;
             margin-bottom: 0.25rem;
@@ -65,7 +54,7 @@
         .owner-id {
             flex-grow: 1; 
             min-width: 0; 
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 800;
             color: #505050;
             overflow: hidden; 
@@ -94,6 +83,7 @@
             border-left: 3px solid #B3FF52; 
             color: #505050;
             padding-left: 10px;
+            margin-left: 5px;
         }
         .status-area {
             font-size: 12px;
@@ -114,7 +104,7 @@
             height: 1.25rem;
         }
         .card-content {
-            padding: 1rem;
+            padding: 10px;
             border-top: 1px dashed #cccccc;
             background-color: #ffffff;
             display: grid;
@@ -124,19 +114,21 @@
         .label-text {
             display: block; 
             font-size: 12px;
-            font-weight: 500;
-            color: #374151;
+            padding-left: 10px;
+            font-weight: bold;
+            color: #808080;
         }
         .input-field {
             margin-top: 0.25rem;
             display: block; 
             width: 100%; 
-            padding: 0.5rem 1rem;
+            padding: 10px;
             border: 1px solid #d1d5db;
             border-radius: 4px;
             transition: all 150ms ease-in-out; 
             background-color: #ffffff;
-            font-size: 13px;
+            font-size: 16px;
+            color: #505050;
         }
         .input-field:focus {
             outline: 2px solid transparent;
@@ -901,6 +893,5 @@
 </script>
 </body>
 </html>
-
 
 
