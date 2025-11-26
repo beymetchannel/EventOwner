@@ -6,62 +6,55 @@
     <title>交流会登録フォーム</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ===================================== */
-        /* カスタムスタイル              */
-        /* ===================================== */
         
         body {
             font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, Arial, Helvetica, Verdana, sans-serif;
             background-color: #f7f9fb;
         }
 
-        /* ページ全体 */
         .page-wrapper {
-            padding: 1rem; /* p-4 */
+            padding: 1rem;
         }
         @media (min-width: 768px) {
             .page-wrapper {
-                padding: 2rem; /* md:p-8 */
+                padding: 2rem;
             }
         }
 
-        /* メインコンテナ */
         .main-container {
-            max-width: 56rem; /* max-w-4xl */
-            margin-left: auto; /* mx-auto */
-            margin-right: auto; /* mx-auto */
-            background-color: #ffffff; /* bg-white */
-            border-radius: 4px; /* rounded-xl */
-            padding: 1.5rem; /* p-6 */
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #ffffff;
+            border-radius: 4px;
+            padding: 1.5rem;
         }
         @media (min-width: 768px) {
             .main-container {
-                padding: 2.5rem; /* md:p-10 */
+                padding: 2.5rem;
             }
         }
         
-        /* ヘッダー */
         .header-title {
-            font-size: 20px; /* text-3xl */
-            font-weight: 700; /* font-bold */
-            color: #505050; /* text-gray-800 */
-            margin-bottom: 10px; /* mb-6 */
-            border-bottom-width: 1px; /* border-b */
-            padding-bottom: 5px; /* pb-2 */
+            font-size: 20px;
+            font-weight: 700;
+            color: #505050;
+            margin-bottom: 10px;
+            border-bottom-width: 1px;
+            padding-bottom: 5px;
         }
 
-        /* オーナーID表示ボックス */
         .owner-box {
-            margin-bottom: 10px; /* mb-6 */
-            padding: 1rem; /* p-4 */
-            background-color: #DCFCE7; /* bg-yellow-50 */
-            border-radius: 4px; /* rounded-lg */
+            margin-bottom: 10px;
+            padding: 1rem;
+            background-color: #DCFCE7;
+            border-radius: 4px;
         }
         .owner-label {
-            font-size: 12px; /* text-sm */
-            font-weight: 600; /* font-semibold */
-            color: #16A34A; /* text-yellow-700 */
-            margin-bottom: 0.25rem; /* mb-1 */
+            font-size: 12px;
+            font-weight: 600;
+            color: #16A34A;
+            margin-bottom: 0.25rem;
         }
         .owner-id-wrapper {
             display: flex;
@@ -72,98 +65,86 @@
         .owner-id {
             flex-grow: 1; 
             min-width: 0; 
-            font-size: 16px; /* text-xl */
-            font-weight: 800; /* font-extrabold */
-            color: #505050; /* text-yellow-800 */
+            font-size: 16px;
+            font-weight: 800;
+            color: #505050;
             overflow: hidden; 
             display: block; 
         }
 
-        /* カードコンテナ */
         .event-cards-container {
             display: flex;
             flex-direction: column;
-            gap: 1rem; /* space-y-4 */
+            gap: 1rem;
         }
 
-        /* 交流会カード (detailsタグ) */
         .event-card {
-            border: 1px solid #cccccc; /* border border-blue-200 */
-            border-radius: 4px; /* rounded-xl */
-            /* group はdetailsに残し、details[open]と.chevron-icon-wrapperを連動 */
+            border: 1px solid #cccccc;
+            border-radius: 4px;
         }
 
-        /* カードサマリー (summaryタグ) */
         .card-summary {
             display: flex;
             justify-content: space-between; 
             align-items: center; 
-            padding: 10px 5px; /* p-4 */
+            padding: 10px 5px;
             cursor: pointer;
-            outline: none; /* focus:outline-none */
+            outline: none;
         }
 
-        /* カードタイトル (text-lg) */
-        /* JSでタイトル更新のためにtext-lgクラスは残す */
         .card-title {
-            font-size: 16px; /* text-lg */
-            font-weight: 600; /* font-semibold */
+            font-size: 16px;
+            font-weight: 600;
             border-left: 3px solid #B3FF52; 
-            color: #505050; /* text-blue-700 */
+            color: #505050;
             padding-left: 10px;
         }
 
-        /* ステータスと開閉アイコンエリア */
         .status-area {
             font-size: 12px;
             font-weight: bold;
             display: flex;
             align-items: center; 
-            gap: 1rem; /* space-x-4 */
+            gap: 1rem;
         }
         
-        /* 開閉アイコン */
         .chevron-icon-wrapper {
-            color: #cccccc; /* text-blue-500 */
+            color: #cccccc;
             transition: transform 200ms ease-in-out;
         }
         .event-card[open] .chevron-icon-wrapper {
-            transform: rotate(180deg); /* group-open:rotate-180 */
+            transform: rotate(180deg);
         }
         .chevron-icon {
-            width: 1.25rem; /* w-5 */
-            height: 1.25rem; /* h-5 */
+            width: 1.25rem;
+            height: 1.25rem;
         }
 
-        /* カード内容 (details body) */
         .card-content {
-            padding: 1rem; /* p-4 */
+            padding: 1rem;
             border-top: 1px dashed #cccccc;
-            background-color: #ffffff; /* bg-white */
+            background-color: #ffffff;
             display: grid;
-            grid-template-columns: 1fr; /* grid-cols-1 */
-            gap: 1rem; /* gap-4 */
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
 
-        /* フォームラベル */
         .label-text {
             display: block; 
-            font-size: 12px; /* text-sm */
-            font-weight: 500; /* font-medium */
-            color: #374151; /* text-gray-700 */
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
         }
 
-        /* 入力フィールド共通スタイル (input, select, textarea) */
         .input-field {
-            /* 以前JSで追加されていたスタイルをこちらに統合 */
-            margin-top: 0.25rem; /* mt-1 */
+            margin-top: 0.25rem;
             display: block; 
             width: 100%; 
-            padding: 0.5rem 1rem; /* px-4 py-2 */
-            border: 1px solid #d1d5db; /* border border-gray-300 */
-            border-radius: 4px; /* rounded-lg */
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
             transition: all 150ms ease-in-out; 
-            background-color: #ffffff; /* selectタグ用 */
+            background-color: #ffffff;
             font-size: 13px;
         }
         .input-field:focus {
@@ -172,60 +153,56 @@
             border-color: #6beb71; 
         }
 
-        /* ボタン群 */
         .button-group {
             display: flex;
-            justify-content: center; /* 修正: 中央配置に変更 */
-            gap: 1rem; /* space-x-4 */
-            padding-top: 1rem; /* pt-4 */
-            border-top: 1px solid #e5e7eb; /* border-t */
-            margin-top: 1rem; /* mt-4 */
+            justify-content: center;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 1rem;
         }
 
-        /* Clearボタン */
         .clear-button {
-            padding: 0.5rem 1rem; /* px-4 py-2 */
-            font-size: 0.875rem; /* text-sm */
-            font-weight: 500; /* font-medium */
-            color: #374151; /* text-gray-700 */
-            background-color: #e5e7eb; /* bg-gray-200 */
-            border-radius: 4px; /* rounded-lg */
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            background-color: #e5e7eb;
+            border-radius: 4px;
             transition: background-color 150ms; 
             width: 80px;
             border: 1px solid #cccccc;
         }
         .clear-button:hover {
-            background-color: #d1d5db; /* hover:bg-gray-300 */
+            background-color: #d1d5db;
         }
 
-        /* 登録ボタン */
         .register-button {
-            padding: 0.5rem 1rem; /* px-4 py-2 */
-            font-size: 0.875rem; /* text-sm */
-            font-weight: 500; /* font-medium */
-            color: #505050; /* text-white */
-            background-color: #B3FF52; /* bg-blue-600 */
-            border-radius: 4px; /* rounded-lg */
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #505050;
+            background-color: #B3FF52;
+            border-radius: 4px;
             transition: background-color 150ms; 
             width: 80px;
             border: 1px solid #dcdcdc;
         }
         .register-button:hover {
-            background-color: #B3FF52; /* hover:bg-blue-700 */
+            background-color: #B3FF52;
         }
         .register-button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
 
-        /* 削除ボタン - 【新規追加】 */
         .delete-button {
-            padding: 0.5rem 1rem; /* px-4 py-2 */
-            font-size: 0.875rem; /* text-sm */
-            font-weight: 500; /* font-medium */
-            color: #ffffff; /* text-white */
-            background-color: #f06163; /* bg-red-600 */
-            border-radius: 4px; /* rounded-lg */
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: #f06163;
+            border-radius: 4px;
             transition: background-color 150ms; 
             border-color:#505050;
             border: 1px;
@@ -233,22 +210,19 @@
             border: 1px solid #dcdcdc;
         }
         .delete-button:hover {
-            background-color: #f06163; /* hover:bg-red-700 */
+            background-color: #f06163;
         }
-        /* /削除ボタン - 【新規追加】 */
 
-        /* メッセージボックス */
         .message-box {
-            margin-top: 2rem; /* mt-8 */
-            padding: 0.75rem; /* p-3 */
-            border-radius: 4px; /* rounded-lg */
-            font-size: 0.875rem; /* text-sm */
+            margin-top: 2rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
         }
         .message-box.hidden {
             display: none;
         }
 
-        /* detailsタグの開閉アニメーション（簡易版） */
         details[open] summary ~ * {
             animation: sweep .3s ease-in-out;
         }
@@ -532,44 +506,31 @@
     </div>
 
 <script type="module">
-    // ----------------- Supabase設定 -----------------
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
     
-    // **!!! ここをあなたのSupabaseプロジェクト情報に置き換えてください !!!**
     const supabaseUrl = 'https://yyrsscvofuoufkujetgf.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5cnNzY3ZvZnVvdWZrdWpldGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMzIxMjksImV4cCI6MjA3OTYwODEyOX0.mNPIAGFKhJ65dsSllBprGYk3yZfnJXfYmDcdljW8xA4';
     
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    // ----------------- グローバル変数 -----------------
     const messageDiv = document.getElementById('message');
     const eventNums = [1, 2, 3]; 
     const initialCheckFlgs = {};
     
-    // 【新規追加】初期ロード時のDBデータを保持するオブジェクト
     const initialData = {}; 
     
-    // **【重要】複合主キーに対応するため、仮のオーナーIDを設定**
-    const CURRENT_OWNER_ID = '@K_Nero0313'; 
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlId = urlParams.get('id');
+
+    const CURRENT_OWNER_ID = urlId ? urlId : '@TEST'; 
     
-    // オーナーID表示を新しいボックスに反映
     document.getElementById('ownerIdDisplay').textContent = CURRENT_OWNER_ID; 
     
-    // 全項目リスト
     const allFields = ['name', 'date', 'time', 'location', 'address', 'capacity', 'details'];
     const defaultFee = '参加費：無料';
     
-    // ----------------- ヘルパー関数 -----------------
-
-    /**
-     * メッセージ表示関数
-     * @param {string} text 表示するメッセージ
-     * @param {boolean} isError エラーメッセージか否か
-     * @param {boolean} isWarning 警告メッセージか否か
-     */
     function showMessage(text, isError = false, isWarning = false) {
         messageDiv.innerHTML = text;
-        // スタイルの制御もCSSクラスで行う
         messageDiv.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'bg-yellow-100', 'text-yellow-700');
         
         if (isError) {
@@ -581,14 +542,7 @@
         }
     }
 
-    /**
-     * 【新規追加】メール送信APIを呼び出す関数
-     * @param {string} type 変更種別 ('register' または 'delete')
-     * @param {number} num イベント番号
-     * @param {object} data 送信するデータ (登録時はフォームデータ, 削除時はnull)
-     */
     async function sendEmailNotification(type, num, data = null) {
-        // **【重要】このエンドポイントはSupabase Edge Functionなどで実装する必要があります。**
         const emailApiUrl = `${supabaseUrl}/functions/v1/send-email`; 
         const recipient = 'beymet.channel@gmail.com';
         
@@ -597,20 +551,19 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${supabaseKey}` // 認証が必要な場合
+                    'Authorization': `Bearer ${supabaseKey}`
                 },
                 body: JSON.stringify({
                     ownerId: CURRENT_OWNER_ID,
                     eventNum: num,
-                    changeType: type, // 'register' or 'delete'
-                    eventData: data, // 登録データまたは null
+                    changeType: type,
+                    eventData: data,
                     recipient: recipient,
                 })
             });
 
             if (!response.ok) {
                 console.error(`メール送信APIエラー: ${response.status} ${response.statusText}`);
-                // 登録/削除処理は成功しているので、ここでは致命的なエラーとはしない
             } else {
                 console.log('メール通知を送信しました。');
             }
@@ -619,9 +572,6 @@
         }
     }
     
-    // ----------------- ステータス関連ロジック -----------------
-    // ... (updateStatusDisplay, setupStatusListeners は変更なし)
-    // 必須フィールドチェック関数: イベント名と日付のみ
     function areRequiredFieldsFilled(num) {
         const nameInput = document.getElementById(`name_${num}`);
         const dateInput = document.getElementById(`date_${num}`);
@@ -629,23 +579,20 @@
         return nameInput.value.trim() !== '' && dateInput.value.trim() !== '';
     }
 
-    // ステータス表示＆タイトル更新関数
     function updateStatusDisplay(num) {
         const isChecked = initialCheckFlgs[num]; 
         const isRequiredFilled = areRequiredFieldsFilled(num);
         const statusDisplay = document.getElementById(`statusDisplay_${num}`);
         
-        // 【ブラッシュアップ適用: 交流会カードタイトルの動的更新】
         const nameValue = document.getElementById(`name_${num}`).value.trim();
         const dateValue = document.getElementById(`date_${num}`).value.trim();
-        const titleDisplay = document.querySelector(`#card_${num} summary .card-title`); // .card-titleを使用
+        const titleDisplay = document.querySelector(`#card_${num} summary .card-title`);
         const defaultTitle = `交流会${['①', '②', '③'][num - 1]}`;
 
         if (titleDisplay) {
             if (nameValue !== '' && dateValue !== '') {
                 try {
                     const dateObj = new Date(dateValue);
-                    // Dateオブジェクトが有効な場合のみフォーマット
                     if (!isNaN(dateObj)) {
                         const formattedTitle = `${dateObj.getMonth() + 1}/${dateObj.getDate()} ${nameValue}`;
                         titleDisplay.textContent = formattedTitle;
@@ -659,26 +606,20 @@
                 titleDisplay.textContent = defaultTitle;
             }
         }
-        // 【ブラッシュアップ適用ここまで】
 
         if (!statusDisplay) return;
 
-        // checkFlgがtrueの場合: 🟢掲載中 (DBに掲載許可された状態)
         if (isChecked) {
             statusDisplay.innerHTML = '<span class="text-green-600">🟢掲載中</span>';
         } else {
-            // checkFlgがfalseの場合
             if (isRequiredFilled) {
-                // 必須項目入力済み: 🟡確認中 (DBに登録済みだが要確認状態)
                 statusDisplay.innerHTML = '<span class="text-yellow-600">🟡確認中</span>';
             } else {
-                // 未入力項目あり: 🔴未入力 (必須項目が空の状態)
                 statusDisplay.innerHTML = '<span class="text-red-600">🔴未入力</span>';
             }
         }
     }
 
-    // フォーム入力変更時のリスナー設定
     function setupStatusListeners() {
         eventNums.forEach(num => {
             const cardDiv = document.querySelector(`#card_${num}`);
@@ -687,39 +628,34 @@
                     input.addEventListener('input', () => updateStatusDisplay(num));
                     input.addEventListener('change', () => updateStatusDisplay(num));
                 });
-                updateStatusDisplay(num); // 初回ロード時にもステータスとタイトルを更新
+                updateStatusDisplay(num);
             }
         });
     }
 
-    // ----------------- データ取得 & チェック -----------------
-
-    // フォームから特定のイベント番号のデータを取得
     function getEventData(num) {
         const dateInput = document.getElementById(`date_${num}`);
         const feeValue = document.getElementById(`fee_${num}`).value.trim();
         
-        // 参加費 (Fee) の処理
         const feeData = (() => {
             if (feeValue === defaultFee || feeValue === '') {
-                return 0; // '参加費：無料'や空文字は数値の0として扱う
+                return 0;
             }
             const numericFeeString = feeValue.replace(/[^0-9.]/g, ''); 
             const parsedFee = parseFloat(numericFeeString);
             
-            return isNaN(parsedFee) ? null : parsedFee; 
+            return isNaN(parsedFee) ? null : parsedFee;
         })();
         
         return {
-            // 【複合主キー対応】オーナーIDを追加
             owner: CURRENT_OWNER_ID,
             eventNum: num,
-            date: dateInput.value || null, // null許容
-            name: document.getElementById(`name_${num}`).value || null, // null許容
+            date: dateInput.value || null,
+            name: document.getElementById(`name_${num}`).value || null,
             time: document.getElementById(`time_${num}`).value || null,
             location: document.getElementById(`location_${num}`).value || null,
             fee: feeData, 
-            feeRaw: feeValue, // 生の文字列 (バリデーション用)
+            feeRaw: feeValue, 
             capacity: document.getElementById(`capacity_${num}`).value || null,
             entry: document.getElementById(`entry_${num}`).value || '当日受付:なし',
             eligibility: document.getElementById(`eligibility_${num}`).value || '6歳以上(オープン)',
@@ -728,16 +664,13 @@
         };
     }
 
-    // 【新規追加】DBへの登録データと比較するための整形関数
     function formatDataForComparison(data) {
-        // DBへのupsert時に使用する項目のみを抽出し、null/空文字を統一
         const formatted = {};
         for (const key in data) {
             if (key === 'feeRaw' || key === 'owner' || key === 'eventNum') continue;
             
             let value = data[key];
             
-            // feeは数値で比較 (0とnull/undefined/空文字を統一)
             if (key === 'fee') {
                  formatted[key] = (value === null || value === undefined) ? 0 : value;
             } else if (key === 'date' || key === 'name' || key === 'time' || key === 'location' || key === 'address' || key === 'capacity' || key === 'details') {
@@ -747,68 +680,52 @@
             }
         }
         
-        // entryとeligibilityは常に値があるため、デフォルト値と比較して統一
         formatted.entry = formatted.entry === '当日受付:なし' ? '当日受付:なし' : formatted.entry;
         formatted.eligibility = formatted.eligibility === '6歳以上(オープン)' ? '6歳以上(オープン)' : formatted.eligibility;
 
-        // DBに存在しない場合は初期データもnullで統一
         if (formatted.date === '') formatted.date = null;
         if (formatted.name === '') formatted.name = null;
         
         return formatted;
     }
 
-    /**
-     * 【新規追加】既存データと現在のフォームデータを比較
-     * @param {number} num イベント番号
-     * @returns {boolean} データが変更されたかどうか (true: 変更あり, false: 変更なし)
-     */
     function checkIfDataChanged(num) {
         const currentData = getEventData(num);
         const initial = initialData[num];
 
         if (!initial) {
-             // 初回登録時 (DBにレコードが存在しないか、空のレコード) は必ず変更ありと見なす
              return Object.values(formatDataForComparison(currentData)).some(val => val !== null && val !== 0 && val !== '当日受付:なし' && val !== '6歳以上(オープン)');
         }
 
-        // DBに存在するデータとフォームのデータを整形して比較
         const currentFormatted = formatDataForComparison(currentData);
         const initialFormatted = formatDataForComparison(initial);
         
-        // checkFlgは比較対象外
         delete initialFormatted.checkFlg;
         
-        // 厳密な比較 (キーの順番は問わないが、値は厳密に一致)
         return JSON.stringify(currentFormatted) !== JSON.stringify(initialFormatted);
     }
     
-    // 個別登録時のデータチェックロジック
     function validateEventData(data) {
         const errors = [];
         const currentDate = new Date().toISOString().split('T')[0];
         const feeRaw = data.feeRaw; 
 
-        // 1. 必須項目入力チェック
         ['name', 'date'].forEach(fieldKey => {
             if (!data[fieldKey] || data[fieldKey].toString().trim() === '') {
                 errors.push(`「${fieldKey === 'name' ? 'イベント名' : '日付'}」が未入力です。`);
             }
         });
         
-        // 2. 日付が過去はNGチェック
         if (data.date && data.date < currentDate) {
             errors.push(`日付 ${data.date} は過去日です。未来の日付を設定してください。`);
         }
         
-        // 3. 参加費の数値チェック
         if (feeRaw.trim() !== '' && feeRaw.trim() !== defaultFee) {
             if (data.fee === null) {
                 errors.push(`参加費の形式が不正です。半角数字のみ（例: 1000）で入力するか、「${defaultFee}」のままにしてください。`);
             }
         }
 
-        // 4. 住所の都道府県チェック
         const prefectures = [
             "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
             "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
@@ -824,17 +741,10 @@
             errors.push(`住所が都道府県名から始まっていません。例: 東京都...`);
         }
         
-        // 5. その他必須項目 (必須ではないが、もし入力されていなかったら警告)
-        // ※このフォームは必須項目が'name'と'date'だけなので、その他はここではエラーとしない
-        
         return errors;
     }
 
-    // ----------------- 個別操作関数 -----------------
-
-    // Clearボタンの処理 (フォームのみクリア)
     window.clearCard = function(num) {
-        // 【変更】確認メッセージを追加
         const isConfirmed = confirm(`イベント${num} の入力内容をクリアします。よろしいですか？\n\n(登録ボタンもしくは削除ボタンを押すまではベイカレンダーに反映はされません)`);
 
         if (!isConfirmed) {
@@ -852,7 +762,6 @@
                 }
             });
             cardElement.querySelectorAll('select').forEach(select => {
-                // selectタグを初期値に戻す
                 if (select.name.startsWith('eligibility_')) {
                     select.value = '6歳以上(オープン)';
                 } else if (select.name.startsWith('entry_')) {
@@ -865,9 +774,7 @@
         }
     }
 
-    // 削除ボタンの処理 (フォームクリア & DBレコードをクリアデータで更新)
     window.deleteEvent = async function(num) {
-        // 1. 警告表示
         const isConfirmed = confirm(`イベント${num} をベイカレンダーから削除します。よろしいですか？\n\nこの操作は取り消せません。`);
 
         if (!isConfirmed) {
@@ -882,10 +789,8 @@
         messageDiv.classList.add('hidden');
 
         try {
-            // 2. フォームをクリア
-            window.clearCard(num); // 既存のフォームクリア関数を再利用 (ここでは確認ダイアログはスキップされる)
+            window.clearCard(num); 
             
-            // 3. データベースをクリア/デフォルト値で更新
             const dataToClear = {
                 owner: CURRENT_OWNER_ID,
                 eventNum: num,
@@ -893,16 +798,15 @@
                 name: null,
                 time: null,
                 location: null,
-                fee: 0, // '参加費：無料' のDB値 (数値の0)
+                fee: 0, 
                 capacity: null,
-                entry: '当日受付:なし', // SELECTのデフォルト値
-                eligibility: '6歳以上(オープン)', // SELECTのデフォルト値
+                entry: '当日受付:なし', 
+                eligibility: '6歳以上(オープン)', 
                 address: null,
                 details: null,
-                checkFlg: false, // 登録情報がクリアされたので、確認フラグもfalseに戻す
+                checkFlg: false, 
             };
             
-            // 【複合主キー対応】onConflictに 'owner,eventNum' を指定して、クリアデータで更新
             const { error } = await supabase
                 .from('EventDB')
                 .upsert([dataToClear], { onConflict: 'owner,eventNum' });
@@ -911,23 +815,18 @@
                 throw error;
             }
             
-            // 4. 成功処理
             showMessage(`イベント${num}を削除しました。ベイカレンダーへの反映には時間がかかります。`, false);
             
-            // checkFlg を更新
             initialCheckFlgs[num] = false; 
             updateStatusDisplay(num);
             
-            // 【新規追加】初期データもクリア
             initialData[num] = { ...dataToClear, checkFlg: false }; 
             
-            // 5. カードを閉じる
             const cardElement = document.getElementById(`card_${num}`);
             if (cardElement && cardElement.open) {
                 cardElement.open = false; 
             }
             
-            // 【新規追加】メール送信
             await sendEmailNotification('delete', num, dataToClear);
 
         } catch (error) {
@@ -942,9 +841,7 @@
             deleteButton.textContent = originalText;
         }
     }
-    // /削除ボタンの処理
 
-    // 登録ボタンの処理 (個別更新)
     window.registerEvent = async function(num) {
         const registerButton = document.getElementById(`registerButton_${num}`);
         const originalText = registerButton.textContent;
@@ -963,7 +860,6 @@
             return;
         }
         
-        // 【新規追加】既存登録情報と変更が無かった場合のチェック
         if (!checkIfDataChanged(num)) {
             showMessage(`イベント${num}: **イベント内容が既存の登録情報と変更されていません。**`, false, true);
             registerButton.disabled = false;
@@ -971,7 +867,6 @@
             return;
         }
 
-        // 【新規追加】最終確認メッセージ
         const isConfirmed = confirm(`イベント${num} の入力内容で登録します。よろしいですか？\n\n登録後、管理者による承認が行われます。`);
 
         if (!isConfirmed) {
@@ -981,7 +876,6 @@
             return;
         }
 
-        // データチェックOKの場合、checkFlg: false で更新
         const dataToSubmit = { 
             ...data,
             checkFlg: false, 
@@ -992,7 +886,6 @@
         console.log(`[Event #${num} 登録開始] onConflict パラメータ: 'owner,eventNum'`);
 
         try {
-            // 【複合主キー対応】onConflictに 'owner,eventNum' を指定
             const { data: updatedData, error } = await supabase
                 .from('EventDB')
                 .upsert([dataToSubmit], { onConflict: 'owner,eventNum' }) 
@@ -1003,28 +896,23 @@
                 throw error;
             }
             
-            // 成功処理
             showMessage(`イベント${num}のデータを更新しました。\n\n管理者による承認後にベイカレンダーへ反映されます。`, false);
 
-            // 登録成功時にカードを閉じる
             const cardElement = document.getElementById(`card_${num}`);
             if (cardElement && cardElement.open) {
                 cardElement.open = false; 
             }
 
-            // 画面上の状態と初期データを更新
             if (updatedData) {
                 initialCheckFlgs[num] = updatedData.checkFlg; 
-                initialData[num] = updatedData; // 【新規追加】初期データ更新
+                initialData[num] = updatedData; 
                 updateStatusDisplay(num); 
             }
             
-            // 【新規追加】メール送信
             await sendEmailNotification('register', num, updatedData);
 
 
         } catch (error) {
-            // データベース操作のエラーが発生した場合
             console.error(`[Event #${num} Supabaseエラー]`, error);
             
             let errorMessage = `イベント${num}の登録に失敗しました。<br>`;
@@ -1047,9 +935,7 @@
     }
 
     
-    // ----------------- 初期データロード機能 -----------------
     window.addEventListener('load', async () => {
-        // 【複合主キー対応】 ownerでフィルタリングして、現在のユーザーのデータのみをロード
         const { data: events, error } = await supabase
             .from('EventDB')
             .select('*')
@@ -1061,26 +947,21 @@
             console.error("データロードエラー:", error);
         }
 
-        // イベントカードを初期化
         eventNums.forEach(num => {
             const event = events ? events.find(e => e.eventNum === num) : null;
             const eventNameField = document.getElementById(`name_${num}`);
             
-            // 1. checkFlgと初期データを保持
             initialCheckFlgs[num] = event ? (event.checkFlg || false) : false; 
-            initialData[num] = event ? event : null; // 【新規追加】初期データセット
+            initialData[num] = event ? event : null;
 
             if (eventNameField && event) {
-                // 2. フォームに値をセット
                 eventNameField.value = event.name || '';
                 document.getElementById(`date_${num}`).value = event.date || '';
                 document.getElementById(`time_${num}`).value = event.time || '';
                 document.getElementById(`location_${num}`).value = event.location || '';
                 
-                // 参加費 (Fee) のロード
                 const feeInput = document.getElementById(`fee_${num}`);
                 if (event.fee !== null && event.fee !== undefined) {
-                    // 数値の0またはnull/undefinedの場合はデフォルト値
                     feeInput.value = event.fee === 0 ? defaultFee : event.fee; 
                 } else {
                     feeInput.value = defaultFee;
@@ -1100,14 +981,12 @@
                 
                 console.log(`EventNum ${num} のデータをロードしました。`);
             } else if (!event) {
-                // データがない場合は、デフォルト値で初期化
                  document.getElementById(`fee_${num}`).value = defaultFee;
                  document.getElementById(`eligibility_${num}`).value = '6歳以上(オープン)';
                  document.getElementById(`entry_${num}`).value = '当日受付:なし';
             }
         });
         
-        // 3. リスナーを設定し、初期ステータスとタイトルを表示
         setupStatusListeners();
     });
 
