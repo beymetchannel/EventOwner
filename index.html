@@ -506,31 +506,47 @@
     </div>
 
 <script type="module">
+    // ----------------- Supabase設定 -----------------
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
     
+    // **!!! ここをあなたのSupabaseプロジェクト情報に置き換えてください !!!**
     const supabaseUrl = 'https://yyrsscvofuoufkujetgf.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5cnNzY3ZvZnVvdWZrdWpldGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMzIxMjksImV4cCI6MjA3OTYwODEyOX0.mNPIAGFKhJ65dsSllBprGYk3yZfnJXfYmDcdljW8xA4';
     
     const supabase = createClient(supabaseUrl, supabaseKey);
     
+    // ----------------- グローバル変数 -----------------
     const messageDiv = document.getElementById('message');
     const eventNums = [1, 2, 3]; 
     const initialCheckFlgs = {};
     
+    // 初期ロード時のDBデータを保持するオブジェクト
     const initialData = {}; 
     
+    // 【重要】URLパラメータからIDを取得するか、デフォルト値を使用
     const urlParams = new URLSearchParams(window.location.search);
     const urlId = urlParams.get('id');
 
-    const CURRENT_OWNER_ID = urlId ? urlId : '@TEST'; 
+    const CURRENT_OWNER_ID = urlId ? urlId : '@K_Nero0313'; 
     
+    // オーナーID表示を新しいボックスに反映
     document.getElementById('ownerIdDisplay').textContent = CURRENT_OWNER_ID; 
     
+    // 全項目リスト
     const allFields = ['name', 'date', 'time', 'location', 'address', 'capacity', 'details'];
     const defaultFee = '参加費：無料';
     
+    // ----------------- ヘルパー関数 -----------------
+
+    /**
+     * メッセージ表示関数
+     * @param {string} text 表示するメッセージ
+     * @param {boolean} isError エラーメッセージか否か
+     * @param {boolean} isWarning 警告メッセージか否か
+     */
     function showMessage(text, isError = false, isWarning = false) {
         messageDiv.innerHTML = text;
+        // スタイルの制御もCSSクラスで行う
         messageDiv.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'bg-yellow-100', 'text-yellow-700');
         
         if (isError) {
@@ -542,36 +558,68 @@
         }
     }
 
+    /**
+     * 【修正済み】メール送信APIを呼び出す関数
+     * @param {string} type 変更種別 ('register' または 'delete')
+     * @param {number} num イベント番号
+     * @param {object} data 送信するデータ (登録時はフォームデータ, 削除時はnull)
+     */
     async function sendEmailNotification(type, num, data = null) {
+        // ★修正点1: Edge Function名を 'resend-email' に合わせました
         const emailApiUrl = `${supabaseUrl}/functions/v1/resend-email`; 
-        const recipient = 'beymet.channel@gmail.com';
+        const recipient = 'beymet.channel@gmail.com'; // 管理者のメールアドレス
         
         try {
             const response = await fetch(emailApiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${supabaseKey}`
+                    // ★修正点2: Authorizationヘッダーは削除済みです
                 },
                 body: JSON.stringify({
                     ownerId: CURRENT_OWNER_ID,
                     eventNum: num,
-                    changeType: type,
-                    eventData: data,
+                    changeType: type, // 'register' or 'delete'
+                    eventData: data, 
                     recipient: recipient,
                 })
             });
 
             if (!response.ok) {
-                console.error(`メール送信APIエラー: ${response.status} ${response.statusText}`);
+                // サーバーがエラーレスポンスを返した場合 (404, 500など)
+                let errorDetails = `Status: ${response.status} ${response.statusText}`;
+                try {
+                    // エラーメッセージをJSONから取得を試みる
+                    const errorBody = await response.json();
+                    if (errorBody && errorBody.error) {
+                       errorDetails = errorBody.error;
+                    } else if (errorBody && errorBody.message) {
+                       errorDetails = errorBody.message;
+                    }
+                } catch (e) {
+                    // JSONパースエラーは無視し、ステータス情報を使う
+                }
+                
+                console.error(`メール送信APIエラー: ${errorDetails}`);
+                throw new Error(`API呼び出しエラーが発生しました。詳細: ${errorDetails}`);
             } else {
                 console.log('メール通知を送信しました。');
             }
         } catch (error) {
+            // fetch自体が失敗した場合 (CORSブロックによる TypeError: Failed to fetch)
             console.error('メール通知送信中にエラーが発生しました:', error);
+            // ユーザーに分かりやすいメッセージを出す
+            // ★修正点3: エラーメッセージを分かりやすく表示
+            const displayError = error.message.includes('Failed to fetch') 
+                ? '通信エラーが発生しました。Edge Functionがデプロイされているか、サーバー側のCORS設定を確認してください。' 
+                : error.message;
+
+             showMessage(`メール通知送信中にエラーが発生しました: ${displayError}`, true);
         }
     }
     
+    // ----------------- ステータス関連ロジック -----------------
+    // 必須フィールドチェック関数: イベント名と日付のみ
     function areRequiredFieldsFilled(num) {
         const nameInput = document.getElementById(`name_${num}`);
         const dateInput = document.getElementById(`date_${num}`);
@@ -579,14 +627,16 @@
         return nameInput.value.trim() !== '' && dateInput.value.trim() !== '';
     }
 
+    // ステータス表示＆タイトル更新関数
     function updateStatusDisplay(num) {
         const isChecked = initialCheckFlgs[num]; 
         const isRequiredFilled = areRequiredFieldsFilled(num);
         const statusDisplay = document.getElementById(`statusDisplay_${num}`);
         
+        // 交流会カードタイトルの動的更新
         const nameValue = document.getElementById(`name_${num}`).value.trim();
         const dateValue = document.getElementById(`date_${num}`).value.trim();
-        const titleDisplay = document.querySelector(`#card_${num} summary .card-title`);
+        const titleDisplay = document.querySelector(`#card_${num} summary .card-title`); 
         const defaultTitle = `交流会${['①', '②', '③'][num - 1]}`;
 
         if (titleDisplay) {
@@ -609,17 +659,22 @@
 
         if (!statusDisplay) return;
 
+        // checkFlgがtrueの場合: 🟢掲載中 (DBに掲載許可された状態)
         if (isChecked) {
             statusDisplay.innerHTML = '<span class="text-green-600">🟢掲載中</span>';
         } else {
+            // checkFlgがfalseの場合
             if (isRequiredFilled) {
+                // 必須項目入力済み: 🟡確認中 (DBに登録済みだが要確認状態)
                 statusDisplay.innerHTML = '<span class="text-yellow-600">🟡確認中</span>';
             } else {
+                // 未入力項目あり: 🔴未入力 (必須項目が空の状態)
                 statusDisplay.innerHTML = '<span class="text-red-600">🔴未入力</span>';
             }
         }
     }
 
+    // フォーム入力変更時のリスナー設定
     function setupStatusListeners() {
         eventNums.forEach(num => {
             const cardDiv = document.querySelector(`#card_${num}`);
@@ -628,34 +683,39 @@
                     input.addEventListener('input', () => updateStatusDisplay(num));
                     input.addEventListener('change', () => updateStatusDisplay(num));
                 });
-                updateStatusDisplay(num);
+                updateStatusDisplay(num); // 初回ロード時にもステータスとタイトルを更新
             }
         });
     }
 
+    // ----------------- データ取得 & チェック -----------------
+
+    // フォームから特定のイベント番号のデータを取得
     function getEventData(num) {
         const dateInput = document.getElementById(`date_${num}`);
         const feeValue = document.getElementById(`fee_${num}`).value.trim();
         
+        // 参加費 (Fee) の処理
         const feeData = (() => {
             if (feeValue === defaultFee || feeValue === '') {
-                return 0;
+                return 0; // '参加費：無料'や空文字は数値の0として扱う
             }
             const numericFeeString = feeValue.replace(/[^0-9.]/g, ''); 
             const parsedFee = parseFloat(numericFeeString);
             
-            return isNaN(parsedFee) ? null : parsedFee;
+            return isNaN(parsedFee) ? null : parsedFee; 
         })();
         
         return {
+            // 【複合主キー対応】オーナーIDを追加
             owner: CURRENT_OWNER_ID,
             eventNum: num,
-            date: dateInput.value || null,
-            name: document.getElementById(`name_${num}`).value || null,
+            date: dateInput.value || null, // null許容
+            name: document.getElementById(`name_${num}`).value || null, // null許容
             time: document.getElementById(`time_${num}`).value || null,
             location: document.getElementById(`location_${num}`).value || null,
             fee: feeData, 
-            feeRaw: feeValue, 
+            feeRaw: feeValue, // 生の文字列 (バリデーション用)
             capacity: document.getElementById(`capacity_${num}`).value || null,
             entry: document.getElementById(`entry_${num}`).value || '当日受付:なし',
             eligibility: document.getElementById(`eligibility_${num}`).value || '6歳以上(オープン)',
@@ -664,6 +724,7 @@
         };
     }
 
+    // DBへの登録データと比較するための整形関数
     function formatDataForComparison(data) {
         const formatted = {};
         for (const key in data) {
@@ -689,11 +750,17 @@
         return formatted;
     }
 
+    /**
+     * 既存データと現在のフォームデータを比較
+     * @param {number} num イベント番号
+     * @returns {boolean} データが変更されたかどうか (true: 変更あり, false: 変更なし)
+     */
     function checkIfDataChanged(num) {
         const currentData = getEventData(num);
         const initial = initialData[num];
 
         if (!initial) {
+             // 初回登録時
              return Object.values(formatDataForComparison(currentData)).some(val => val !== null && val !== 0 && val !== '当日受付:なし' && val !== '6歳以上(オープン)');
         }
 
@@ -705,27 +772,32 @@
         return JSON.stringify(currentFormatted) !== JSON.stringify(initialFormatted);
     }
     
+    // 個別登録時のデータチェックロジック
     function validateEventData(data) {
         const errors = [];
         const currentDate = new Date().toISOString().split('T')[0];
         const feeRaw = data.feeRaw; 
 
+        // 1. 必須項目入力チェック
         ['name', 'date'].forEach(fieldKey => {
             if (!data[fieldKey] || data[fieldKey].toString().trim() === '') {
                 errors.push(`「${fieldKey === 'name' ? 'イベント名' : '日付'}」が未入力です。`);
             }
         });
         
+        // 2. 日付が過去はNGチェック
         if (data.date && data.date < currentDate) {
             errors.push(`日付 ${data.date} は過去日です。未来の日付を設定してください。`);
         }
         
+        // 3. 参加費の数値チェック
         if (feeRaw.trim() !== '' && feeRaw.trim() !== defaultFee) {
             if (data.fee === null) {
                 errors.push(`参加費の形式が不正です。半角数字のみ（例: 1000）で入力するか、「${defaultFee}」のままにしてください。`);
             }
         }
 
+        // 4. 住所の都道府県チェック
         const prefectures = [
             "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
             "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
@@ -744,6 +816,9 @@
         return errors;
     }
 
+    // ----------------- 個別操作関数 -----------------
+
+    // Clearボタンの処理 (フォームのみクリア)
     window.clearCard = function(num) {
         const isConfirmed = confirm(`イベント${num} の入力内容をクリアします。よろしいですか？\n\n(登録ボタンもしくは削除ボタンを押すまではベイカレンダーに反映はされません)`);
 
@@ -774,6 +849,7 @@
         }
     }
 
+    // 削除ボタンの処理 (フォームクリア & DBレコードをクリアデータで更新)
     window.deleteEvent = async function(num) {
         const isConfirmed = confirm(`イベント${num} をベイカレンダーから削除します。よろしいですか？\n\nこの操作は取り消せません。`);
 
@@ -789,8 +865,10 @@
         messageDiv.classList.add('hidden');
 
         try {
+            // フォームをクリア
             window.clearCard(num); 
             
+            // データベースをクリア/デフォルト値で更新
             const dataToClear = {
                 owner: CURRENT_OWNER_ID,
                 eventNum: num,
@@ -798,15 +876,16 @@
                 name: null,
                 time: null,
                 location: null,
-                fee: 0, 
+                fee: 0, // '参加費：無料' のDB値 (数値の0)
                 capacity: null,
-                entry: '当日受付:なし', 
-                eligibility: '6歳以上(オープン)', 
+                entry: '当日受付:なし', // SELECTのデフォルト値
+                eligibility: '6歳以上(オープン)', // SELECTのデフォルト値
                 address: null,
                 details: null,
                 checkFlg: false, 
             };
             
+            // 複合主キー対応
             const { error } = await supabase
                 .from('EventDB')
                 .upsert([dataToClear], { onConflict: 'owner,eventNum' });
@@ -815,6 +894,7 @@
                 throw error;
             }
             
+            // 成功処理
             showMessage(`イベント${num}を削除しました。ベイカレンダーへの反映には時間がかかります。`, false);
             
             initialCheckFlgs[num] = false; 
@@ -822,18 +902,20 @@
             
             initialData[num] = { ...dataToClear, checkFlg: false }; 
             
+            // カードを閉じる
             const cardElement = document.getElementById(`card_${num}`);
             if (cardElement && cardElement.open) {
                 cardElement.open = false; 
             }
             
+            // メール送信
             await sendEmailNotification('delete', num, dataToClear);
 
         } catch (error) {
             console.error(`[Event #${num} 削除Supabaseエラー]`, error);
             let errorMessage = `イベント${num}の削除に失敗しました。<br>`;
             if (error.message) {
-                errorMessage += `<strong>DBからのメッセージ:</strong> ${error.message}`;
+                errorMessage += `<strong>エラーメッセージ:</strong> ${error.message}`;
             }
             showMessage(errorMessage, true);
         } finally {
@@ -842,6 +924,7 @@
         }
     }
 
+    // 登録ボタンの処理 (個別更新)
     window.registerEvent = async function(num) {
         const registerButton = document.getElementById(`registerButton_${num}`);
         const originalText = registerButton.textContent;
@@ -860,6 +943,7 @@
             return;
         }
         
+        // 既存登録情報と変更が無かった場合のチェック
         if (!checkIfDataChanged(num)) {
             showMessage(`イベント${num}: **イベント内容が既存の登録情報と変更されていません。**`, false, true);
             registerButton.disabled = false;
@@ -867,6 +951,7 @@
             return;
         }
 
+        // 最終確認メッセージ
         const isConfirmed = confirm(`イベント${num} の入力内容で登録します。よろしいですか？\n\n登録後、管理者による承認が行われます。`);
 
         if (!isConfirmed) {
@@ -876,16 +961,15 @@
             return;
         }
 
+        // データチェックOKの場合、checkFlg: false で更新
         const dataToSubmit = { 
             ...data,
             checkFlg: false, 
         };
         delete dataToSubmit.feeRaw; 
 
-        console.log(`[Event #${num} 登録開始] 送信するデータ:`, dataToSubmit);
-        console.log(`[Event #${num} 登録開始] onConflict パラメータ: 'owner,eventNum'`);
-
         try {
+            // 複合主キー対応
             const { data: updatedData, error } = await supabase
                 .from('EventDB')
                 .upsert([dataToSubmit], { onConflict: 'owner,eventNum' }) 
@@ -896,19 +980,23 @@
                 throw error;
             }
             
+            // 成功処理
             showMessage(`イベント${num}のデータを更新しました。\n\n管理者による承認後にベイカレンダーへ反映されます。`, false);
 
+            // 登録成功時にカードを閉じる
             const cardElement = document.getElementById(`card_${num}`);
             if (cardElement && cardElement.open) {
                 cardElement.open = false; 
             }
 
+            // 画面上の状態と初期データを更新
             if (updatedData) {
                 initialCheckFlgs[num] = updatedData.checkFlg; 
                 initialData[num] = updatedData; 
                 updateStatusDisplay(num); 
             }
             
+            // メール送信
             await sendEmailNotification('register', num, updatedData);
 
 
@@ -935,7 +1023,9 @@
     }
 
     
+    // ----------------- 初期データロード機能 -----------------
     window.addEventListener('load', async () => {
+        // ownerでフィルタリングして、現在のユーザーのデータのみをロード
         const { data: events, error } = await supabase
             .from('EventDB')
             .select('*')
@@ -947,19 +1037,23 @@
             console.error("データロードエラー:", error);
         }
 
+        // イベントカードを初期化
         eventNums.forEach(num => {
             const event = events ? events.find(e => e.eventNum === num) : null;
             const eventNameField = document.getElementById(`name_${num}`);
             
+            // 1. checkFlgと初期データを保持
             initialCheckFlgs[num] = event ? (event.checkFlg || false) : false; 
-            initialData[num] = event ? event : null;
+            initialData[num] = event ? event : null; 
 
             if (eventNameField && event) {
+                // 2. フォームに値をセット
                 eventNameField.value = event.name || '';
                 document.getElementById(`date_${num}`).value = event.date || '';
                 document.getElementById(`time_${num}`).value = event.time || '';
                 document.getElementById(`location_${num}`).value = event.location || '';
                 
+                // 参加費 (Fee) のロード
                 const feeInput = document.getElementById(`fee_${num}`);
                 if (event.fee !== null && event.fee !== undefined) {
                     feeInput.value = event.fee === 0 ? defaultFee : event.fee; 
@@ -981,16 +1075,19 @@
                 
                 console.log(`EventNum ${num} のデータをロードしました。`);
             } else if (!event) {
+                // データがない場合は、デフォルト値で初期化
                  document.getElementById(`fee_${num}`).value = defaultFee;
                  document.getElementById(`eligibility_${num}`).value = '6歳以上(オープン)';
                  document.getElementById(`entry_${num}`).value = '当日受付:なし';
             }
         });
         
+        // 3. リスナーを設定し、初期ステータスとタイトルを表示
         setupStatusListeners();
     });
 
 </script>
 </body>
 </html>
+
 
