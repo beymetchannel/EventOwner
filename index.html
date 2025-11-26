@@ -543,7 +543,7 @@
     }
 
     async function sendEmailNotification(type, num, data = null) {
-        const emailApiUrl = `${supabaseUrl}/functions/v1/send-email`; 
+        const emailApiUrl = `${supabaseUrl}/functions/v1/resend-email`; 
         const recipient = 'beymet.channel@gmail.com';
         
         try {
@@ -993,3 +993,4 @@
 </script>
 </body>
 </html>
+
