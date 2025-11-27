@@ -621,6 +621,14 @@
                     </div>
                 </details>
             </div>
+            <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+                <a href="https://beymetchannel.github.io/BeyCalendar/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style="font-size: 16px; font-weight: 700; color: #1e40af; text-decoration: underline;">
+                    最新のBEYカレンダーを確認はこちらから 
+                </a>
+            </div>
             
             <div id="message" class="message-box hidden" role="alert"></div>
         </div>
@@ -771,7 +779,8 @@
             statusDisplay.innerHTML = '<span class="text-green-600">🟢掲載中</span>';
         } else {
             if (isRequiredFilled) {
-                statusDisplay.innerHTML = '<span class="text-yellow-600">🟡確認中</span>';
+                // 承認不要になったため、「確認中」ではなく「未登録/未掲載」に近い表示
+                statusDisplay.innerHTML = '<span class="text-yellow-600">🟡未掲載</span>'; 
             } else {
                 statusDisplay.innerHTML = '<span class="text-red-600">🔴未入力</span>';
             }
@@ -938,6 +947,7 @@
                 eligibility: '6歳以上(オープン)',
                 address: null,
                 details: null,
+                // 削除時は checkFlg を false にして非掲載状態を維持
                 checkFlg: false, 
             };
             const { error } = await supabase
@@ -947,7 +957,8 @@
                 throw error;
             }
             
-            showMessage(`イベント${num}を削除しました。ベイカレンダーへの反映には時間がかかります。`, false);
+            // メッセージを修正
+            showMessage(`イベント${num}を削除しました。ベイカレンダーからも削除されます。`, false);
             initialCheckFlgs[num] = false; 
             updateStatusDisplay(num);
             
@@ -996,7 +1007,8 @@
             return;
         }
 
-        const isConfirmed = confirm(`イベント${num} の入力内容で登録します。よろしいですか？\n\n登録後、管理者による承認が行われます。`);
+        // 確認メッセージを修正
+        const isConfirmed = confirm(`イベント${num} の入力内容でベイカレンダーに反映します。よろしいですか？`);
         if (!isConfirmed) {
             showMessage(`イベント${num} の登録処理をキャンセルしました。`, false, true);
             registerButton.disabled = false;
@@ -1006,7 +1018,8 @@
 
         const dataToSubmit = { 
             ...data,
-            checkFlg: false, 
+            // 💡 変更箇所: checkFlg を true に設定し、管理者承認をスキップ
+            checkFlg: true, 
         };
         try {
             const { data: updatedData, error } = await supabase
@@ -1018,7 +1031,8 @@
                 throw error;
             }
             
-            showMessage(`イベント${num}のデータを更新しました。\n\n管理者による承認後にベイカレンダーへ反映されます。`, false);
+            // 完了メッセージを修正
+            showMessage(`イベント${num}のデータを更新しました。\n\n**ベイカレンダーをご確認ください。**`, false);
             const cardElement = document.getElementById(`card_${num}`);
             if (cardElement && cardElement.open) {
                 cardElement.open = false;
@@ -1105,4 +1119,3 @@
 </script>
 </body>
 </html>
-
