@@ -77,10 +77,9 @@
             cursor: pointer;
             outline: none;
         }
-        /* --- 修正1: タイトル2段構成のCSS --- */
         .card-title-wrapper {
             display: flex;
-            flex-direction: column; /* 上下2段にする */
+            flex-direction: column; 
             justify-content: center;
             border-left: 3px solid #B3FF52; 
             padding-left: 10px;
@@ -88,12 +87,12 @@
             color: #505050;
         }
         .card-date-line {
-            font-size: 12px; /* 日付を少し大きめに */
+            font-size: 12px; 
             font-weight: 500;
             color: #808080; 
         }
         .card-name-line {
-            font-size: 14px; /* イベント名を少し小さめに */
+            font-size: 14px; 
             font-weight: 700;
             color: #505050; 
         }
@@ -111,10 +110,6 @@
         }
         .event-card[open] .chevron-icon-wrapper {
             transform: rotate(180deg);
-        }
-        .chevron-icon {
-            width: 1.25rem;
-            height: 1.25rem;
         }
         .card-content {
             padding: 10px;
@@ -149,32 +144,24 @@
             border-color: #6beb71; 
         }
         
-        /* --- 修正2: 日付/時刻入力フィールドの見た目を強制的に統一 --- */
         .input-field[type="date"],
         .input-field[type="time"] {
-            /* ブラウザ固有のスタイルを無効化 */
             -webkit-appearance: none; 
             appearance: none;
-            /* フォントとパディングを他の入力フィールドと統一 */
             font-size: 16px; 
             padding: 10px;   
             width: 100%;
             box-sizing: border-box; 
         }
         
-        /* --- 修正3: select要素（プルダウン）の見た目を強制的に統一 --- */
         select.input-field {
-            /* ブラウザ固有のスタイルを無効化 */
             -webkit-appearance: none; 
             appearance: none;
-            /* デフォルトの矢印を消す */
             background-image: none; 
-            /* 高さ/パディングをテキスト入力と統一 */
             padding: 10px; 
             height: auto; 
         }
         
-        /* Edge/IEのクリアボタンを非表示にする（任意） */
         .input-field::-ms-clear {
             display: none;
         }
@@ -335,7 +322,7 @@
                         </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(1)" id="deleteButton_1" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(1)" class="clear-button">Clear</button>
+                            <button type="button" onclick="clearCard(1, true)" class="clear-button">Clear</button>
                             <button type="button" onclick="registerEvent(1)" id="registerButton_1" class="register-button">登録</button>
                         </div>
                     </div>
@@ -405,7 +392,7 @@
                         </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(2)" id="deleteButton_2" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(2)" class="clear-button">Clear</button>
+                            <button type="button" onclick="clearCard(2, true)" class="clear-button">Clear</button>
                             <button type="button" onclick="registerEvent(2)" id="registerButton_2" class="register-button">登録</button>
                         </div>
                     </div>
@@ -475,7 +462,7 @@
                         </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(3)" id="deleteButton_3" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(3)" class="clear-button">Clear</button>
+                            <button type="button" onclick="clearCard(3, true)" class="clear-button">Clear</button>
                             <button type="button" onclick="registerEvent(3)" id="registerButton_3" class="register-button">登録</button>
                         </div>
                     </div>
@@ -545,7 +532,7 @@
                         </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(4)" id="deleteButton_4" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(4)" class="clear-button">Clear</button>
+                            <button type="button" onclick="clearCard(4, true)" class="clear-button">Clear</button>
                             <button type="button" onclick="registerEvent(4)" id="registerButton_4" class="register-button">登録</button>
                         </div>
                     </div>
@@ -615,14 +602,15 @@
                         </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(5)" id="deleteButton_5" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(5)" class="clear-button">Clear</button>
+                            <button type="button" onclick="clearCard(5, true)" class="clear-button">Clear</button>
                             <button type="button" onclick="registerEvent(5)" id="registerButton_5" class="register-button">登録</button>
                         </div>
                     </div>
                 </details>
             </div>
             <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
-                <a href="https://beymetchannel.github.io/BeyCalendar/" 
+                <a href="#" 
+                id="beyCalendarLink"
                 target="_blank" 
                 rel="noopener noreferrer"
                 style="font-size: 16px; font-weight: 700; color: #1e40af; text-decoration: underline;">
@@ -642,7 +630,6 @@
     const supabase = createClient(supabaseUrl, supabaseKey);
     
     const messageDiv = document.getElementById('message');
-    // ⬇️ 修正1: 3件から5件に増やす
     const eventNums = [1, 2, 3, 4, 5]; 
     const initialCheckFlgs = {};
     const initialData = {}; 
@@ -724,22 +711,20 @@
         const nameValue = document.getElementById(`name_${num}`).value.trim();
         const dateValue = document.getElementById(`date_${num}`).value.trim();
         
-        // 2段構成の要素を取得
         const dateDisplay = document.querySelector(`#card_${num} summary .card-date-line`); 
         const nameDisplay = document.querySelector(`#card_${num} summary .card-name-line`); 
-        // ⬇️ 修正1: eventNumsの変更に合わせて配列を更新
         const defaultTitle = `交流会${['①', '②', '③', '④', '⑤'][num - 1]}`;
 
         if (dateDisplay && nameDisplay) {
             if (nameValue !== '' && dateValue !== '') {
                 try {
                     const dateObj = new Date(dateValue);
-                    if (!isNaN(dateObj.getTime())) { // Dateオブジェクトの有効性チェック
+                    if (!isNaN(dateObj.getTime())) { 
                         const formattedDate = `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
-                        dateDisplay.textContent = formattedDate; // 1段目: 日付
-                        nameDisplay.textContent = nameValue; // 2段目: イベント名
+                        dateDisplay.textContent = formattedDate; 
+                        nameDisplay.textContent = nameValue; 
                     } else {
-                        dateDisplay.textContent = defaultTitle; // 日付が無効ならデフォルト
+                        dateDisplay.textContent = defaultTitle; 
                         nameDisplay.textContent = ''; 
                     }
                 } catch (e) {
@@ -754,32 +739,26 @@
 
         if (!statusDisplay) return;
 
-        // ⬇️ 修正2: 過去日チェックのロジックを追加
         let isPastDate = false;
         if (dateValue) {
             const eventDate = new Date(dateValue);
             const today = new Date();
-            // 時刻を無視して日付のみ比較するため、現在日の時刻部分をクリア
             today.setHours(0, 0, 0, 0); 
 
-            // 昨日の日付を設定 (todayから1日引く)
             const yesterday = new Date(today);
             yesterday.setDate(yesterday.getDate() - 1); 
 
-            // イベント日が昨日以前なら過去日と判定 (<= yesterday)
             if (eventDate <= yesterday) {
                 isPastDate = true;
             }
         }
         
         if (isPastDate && isChecked) {
-            // 掲載中で、かつ過去日の場合
             statusDisplay.innerHTML = '<span class="text-red-600">🔴掲載終了</span>';
         } else if (isChecked) {
             statusDisplay.innerHTML = '<span class="text-green-600">🟢掲載中</span>';
         } else {
             if (isRequiredFilled) {
-                // 承認不要になったため、「確認中」ではなく「未登録/未掲載」に近い表示
                 statusDisplay.innerHTML = '<span class="text-yellow-600">🟡未掲載</span>'; 
             } else {
                 statusDisplay.innerHTML = '<span class="text-red-600">🔴未入力</span>';
@@ -858,7 +837,7 @@
     
     function validateEventData(data) {
         const errors = [];
-        const currentDate = new Date().toISOString().split('T')[0];
+        
 
         ['name', 'date'].forEach(fieldKey => {
             if (!data[fieldKey] || data[fieldKey].toString().trim() === '') {
@@ -866,13 +845,6 @@
             }
         });
         
-        // 日付バリデーションの強化：未来日のチェックのみ残し、過去日の警告はステータス表示ロジックに移譲
-        /*
-        if (data.date && data.date < currentDate) {
-            errors.push(`日付 ${data.date} は過去日です。未来の日付を設定してください。`);
-        }
-        */
-
         const prefectures = [
             "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
             "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
@@ -890,11 +862,13 @@
         return errors;
     }
 
-    window.clearCard = function(num) {
-        const isConfirmed = confirm(`イベント${num} の入力内容をクリアします。よろしいですか？\n\n(登録ボタンもしくは削除ボタンを押すまではベイカレンダーに反映はされません)`);
-        if (!isConfirmed) {
-            showMessage(`イベント${num} のClear処理をキャンセルしました。`, false, true);
-            return;
+    window.clearCard = function(num, showConfirmation = true) {
+        if (showConfirmation) {
+            const isConfirmed = confirm(`イベント${num} の入力内容をクリアします。よろしいですか？\n\n(登録ボタンもしくは削除ボタンを押すまではベイカレンダーに反映はされません)`);
+            if (!isConfirmed) {
+                showMessage(`イベント${num} のClear処理をキャンセルしました。`, false, true);
+                return;
+            }
         }
 
         const cardElement = document.getElementById(`card_${num}`);
@@ -915,7 +889,9 @@
             });
             
             updateStatusDisplay(num); 
-            showMessage(`イベント${num} の入力内容をクリアしました。`, false, true);
+            if (showConfirmation) {
+                showMessage(`イベント${num} の入力内容をクリアしました。`, false, true);
+            }
         }
     }
 
@@ -933,7 +909,7 @@
         messageDiv.classList.add('hidden');
         
         try {
-            window.clearCard(num);
+            window.clearCard(num, false); 
             const dataToClear = {
                 owner: CURRENT_OWNER_ID,
                 eventNum: num,
@@ -947,7 +923,6 @@
                 eligibility: '6歳以上(オープン)',
                 address: null,
                 details: null,
-                // 削除時は checkFlg を false にして非掲載状態を維持
                 checkFlg: false, 
             };
             const { error } = await supabase
@@ -957,7 +932,6 @@
                 throw error;
             }
             
-            // メッセージを修正
             showMessage(`イベント${num}を削除しました。ベイカレンダーからも削除されます。`, false);
             initialCheckFlgs[num] = false; 
             updateStatusDisplay(num);
@@ -1007,7 +981,6 @@
             return;
         }
 
-        // 確認メッセージを修正
         const isConfirmed = confirm(`イベント${num} の入力内容でベイカレンダーに反映します。よろしいですか？`);
         if (!isConfirmed) {
             showMessage(`イベント${num} の登録処理をキャンセルしました。`, false, true);
@@ -1018,7 +991,6 @@
 
         const dataToSubmit = { 
             ...data,
-            // 💡 変更箇所: checkFlg を true に設定し、管理者承認をスキップ
             checkFlg: true, 
         };
         try {
@@ -1031,7 +1003,6 @@
                 throw error;
             }
             
-            // 完了メッセージを修正
             showMessage(`イベント${num}のデータを更新しました。\n\n**ベイカレンダーをご確認ください。**`, false);
             const cardElement = document.getElementById(`card_${num}`);
             if (cardElement && cardElement.open) {
@@ -1115,6 +1086,18 @@
         });
         
         setupStatusListeners();
+        
+        const calendarLink = document.getElementById('beyCalendarLink');
+        if (calendarLink) {
+            calendarLink.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                const baseUrl = 'https://beymetchannel.github.io/BeyCalendar/';
+                const cacheBuster = `?ts=${new Date().getTime()}`;
+                const newUrl = baseUrl + cacheBuster;
+                
+                window.open(newUrl, '_blank');
+            });
+        }
     });
 </script>
 </body>
