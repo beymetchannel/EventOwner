@@ -320,6 +320,13 @@
                             <label for="details_1" class="label-text">募集方法</label>
                             <textarea id="details_1" name="details_1" rows="8" class="input-field"></textarea>
                         </div>
+                        <div>
+                            <label for="ownerFlg_1" class="label-text">運営アカウント</label>
+                            <select id="ownerFlg_1" name="ownerFlg_1" class="input-field">
+                                <option value="true" selected>掲載する</option>
+                                <option value="false">掲載しない</option>
+                            </select>
+                        </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(1)" id="deleteButton_1" class="delete-button">削除</button>
                             <button type="button" onclick="clearCard(1, true)" class="clear-button">Clear</button>
@@ -389,6 +396,14 @@
                         <div>
                             <label for="details_2" class="label-text">募集方法</label>
                             <textarea id="details_2" name="details_2" rows="8" class="input-field"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="ownerFlg_2" class="label-text">運営アカウント</label>
+                            <select id="ownerFlg_2" name="ownerFlg_2" class="input-field">
+                                <option value="true" selected>掲載する</option>
+                                <option value="false">掲載しない</option>
+                            </select>
                         </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(2)" id="deleteButton_2" class="delete-button">削除</button>
@@ -460,6 +475,13 @@
                             <label for="details_3" class="label-text">募集方法</label>
                             <textarea id="details_3" name="details_3" rows="8" class="input-field"></textarea>
                         </div>
+                        <div>
+                            <label for="ownerFlg_3" class="label-text">運営アカウント</label>
+                            <select id="ownerFlg_3" name="ownerFlg_3" class="input-field">
+                                <option value="true" selected>掲載する</option>
+                                <option value="false">掲載しない</option>
+                            </select>
+                        </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(3)" id="deleteButton_3" class="delete-button">削除</button>
                             <button type="button" onclick="clearCard(3, true)" class="clear-button">Clear</button>
@@ -530,6 +552,13 @@
                             <label for="details_4" class="label-text">募集方法</label>
                             <textarea id="details_4" name="details_4" rows="8" class="input-field"></textarea>
                         </div>
+                        <div>
+                            <label for="ownerFlg_4" class="label-text">運営アカウント</label>
+                            <select id="ownerFlg_4" name="ownerFlg_4" class="input-field">
+                                <option value="true" selected>掲載する</option>
+                                <option value="false">掲載しない</option>
+                            </select>
+                        </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(4)" id="deleteButton_4" class="delete-button">削除</button>
                             <button type="button" onclick="clearCard(4, true)" class="clear-button">Clear</button>
@@ -599,6 +628,13 @@
                         <div>
                             <label for="details_5" class="label-text">募集方法</label>
                             <textarea id="details_5" name="details_5" rows="8" class="input-field"></textarea>
+                        </div>
+                        <div>
+                            <label for="ownerFlg_5" class="label-text">運営アカウント</label>
+                            <select id="ownerFlg_5" name="ownerFlg_5" class="input-field">
+                                <option value="true" selected>掲載する</option>
+                                <option value="false">掲載しない</option>
+                            </select>
                         </div>
                         <div class="button-group">
                             <button type="button" onclick="deleteEvent(5)" id="deleteButton_5" class="delete-button">削除</button>
@@ -796,6 +832,7 @@
             eligibility: document.getElementById(`eligibility_${num}`).value || '6歳以上(オープン)',
             address: document.getElementById(`address_${num}`).value || null,
             details: document.getElementById(`details_${num}`).value || null,
+            ownerFlg: document.getElementById(`ownerFlg_${num}`).value === 'true', 
         };
     }
 
@@ -806,6 +843,8 @@
             let value = data[key];
             if (key === 'date' || key === 'name' || key === 'time' || key === 'location' || key === 'address' || key === 'capacity' || key === 'details' || key === 'fee') {
                 formatted[key] = (value === null || value === '') ? null : value.toString().trim();
+            } else if (key === 'ownerFlg') {
+                formatted[key] = !!value;
             } else {
                 formatted[key] = value;
             }
@@ -825,7 +864,7 @@
         const initial = initialData[num];
 
         if (!initial) {
-             return Object.values(formatDataForComparison(currentData)).some(val => val !== null && val !== '参加費：無料' && val !== '当日受付:なし' && val !== '6歳以上(オープン)');
+             return Object.values(formatDataForComparison(currentData)).some(val => val !== null && val !== '参加費：無料' && val !== '当日受付:なし' && val !== '6歳以上(オープン)' && val !== true);
         }
 
         const currentFormatted = formatDataForComparison(currentData);
@@ -885,6 +924,8 @@
                     select.value = '6歳以上(オープン)';
                 } else if (select.name.startsWith('entry_')) {
                     select.value = '当日受付:なし';
+                } else if (select.name.startsWith('ownerFlg_')) {
+                    select.value = 'true';
                 }
             });
             
@@ -924,6 +965,7 @@
                 address: null,
                 details: null,
                 checkFlg: false, 
+                ownerFlg: true,
             };
             const { error } = await supabase
                 .from('EventDB')
@@ -1075,6 +1117,9 @@
                 const entrySelect = document.getElementById(`entry_${num}`);
                 if (entrySelect) entrySelect.value = event.entry || '当日受付:なし'; 
                 
+                const ownerFlgSelect = document.getElementById(`ownerFlg_${num}`);
+                if (ownerFlgSelect) ownerFlgSelect.value = event.ownerFlg === true ? 'true' : 'false';
+
                 document.getElementById(`details_${num}`).value = event.details || '';
                 
                 console.log(`EventNum ${num} のデータをロードしました。`);
@@ -1082,6 +1127,7 @@
                  document.getElementById(`fee_${num}`).value = defaultFee;
                  document.getElementById(`eligibility_${num}`).value = '6歳以上(オープン)';
                  document.getElementById(`entry_${num}`).value = '当日受付:なし';
+                 document.getElementById(`ownerFlg_${num}`).value = 'true';
             }
         });
         
