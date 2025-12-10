@@ -245,6 +245,9 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = 'https://yyrsscvofuoufkujetgf.supabase.co';
+    </script>
 </head>
 <body class="page-wrapper">
 
@@ -664,9 +667,9 @@
 
 <script type="module">
     const supabase = window.supabase.createClient(
-        'https://yyrsscvofuoufkujetgf.supabase.co',
+        supabaseUrl,
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5cnNzY3ZvZnVvdWZrdWpldGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMzIxMjksImV4cCI6MjA3OTYwODEyOX0.mNPIAGFKhJ65dsSllBprGYk3yZfnJXfYmDcdljW8xA4'
-    );
+    );    
     
     const messageDiv = document.getElementById('message');
     const eventNums = [1, 2, 3, 4, 5]; 
@@ -1020,7 +1023,7 @@
         }
         
         if (!checkIfDataChanged(num)) {
-            showMessage(`イベント${num}: **イベント内容が既存の登録情報と変更されていません。**`, false, true);
+            showMessage(`イベント${num}: イベント内容が既存の登録情報と変更されていません。`, false, true);
             registerButton.disabled = false;
             registerButton.textContent = originalText;
             return;
@@ -1048,7 +1051,7 @@
                 throw error;
             }
             
-            showMessage(`イベント${num}のデータを更新しました。\n\n**ベイカレンダーをご確認ください。**`, false);
+            showMessage(`イベント${num}のデータを更新しました。上記リンクからカレンダーをご確認ください。`, false);
             const cardElement = document.getElementById(`card_${num}`);
             if (cardElement && cardElement.open) {
                 cardElement.open = false;
