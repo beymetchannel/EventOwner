@@ -85,6 +85,7 @@
             padding-left: 10px;
             margin-left: 5px;
             color: #505050;
+            max-width: 77%;
         }
         .card-date-line {
             font-size: 12px; 
@@ -102,7 +103,7 @@
             font-weight: bold;
             display: flex;
             align-items: center; 
-            gap: 1rem;
+            padding-right: 10px;
         }
         .chevron-icon-wrapper {
             color: #cccccc;
@@ -281,6 +282,14 @@
                     <div class="card-content">
                         <input type="hidden" name="eventNum_1" value="1">
                         <div>
+                            <label for="type_1" class="label-text">イベントタイプ</label>
+                            <select id="type_1" name="type_1" class="input-field">
+                                <option value="交流会" selected>交流会</option>
+                                <option value="非公式大会">非公式大会</option>
+                                <option value="S1【予定】">S1【予定】</option>
+                            </select>
+                        </div>
+                        <div>
                             <label for="name_1" class="label-text">イベント名</label>
                             <input type="text" id="name_1" name="name_1" required class="input-field">
                         </div>
@@ -357,6 +366,14 @@
                     </summary>
                     <div class="card-content">
                         <input type="hidden" name="eventNum_2" value="2">
+                        <div>
+                            <label for="type_2" class="label-text">イベントタイプ</label>
+                            <select id="type_2" name="type_2" class="input-field">
+                                <option value="交流会" selected>交流会</option>
+                                <option value="非公式大会">非公式大会</option>
+                                <option value="S1【予定】">S1【予定】</option>
+                            </select>
+                        </div>
                         <div>
                             <label for="name_2" class="label-text">イベント名</label>
                             <input type="text" id="name_2" name="name_2" required class="input-field">
@@ -436,6 +453,14 @@
                     <div class="card-content">
                         <input type="hidden" name="eventNum_3" value="3">
                         <div>
+                            <label for="type_3" class="label-text">イベントタイプ</label>
+                            <select id="type_3" name="type_3" class="input-field">
+                                <option value="交流会" selected>交流会</option>
+                                <option value="非公式大会">非公式大会</option>
+                                <option value="S1【予定】">S1【予定】</option>
+                            </select>
+                        </div>
+                        <div>
                             <label for="name_3" class="label-text">イベント名</span></label>
                             <input type="text" id="name_3" name="name_3" required class="input-field">
                         </div>
@@ -513,6 +538,14 @@
                     <div class="card-content">
                         <input type="hidden" name="eventNum_4" value="4">
                         <div>
+                            <label for="type_4" class="label-text">イベントタイプ</label>
+                            <select id="type_4" name="type_4" class="input-field">
+                                <option value="交流会" selected>交流会</option>
+                                <option value="非公式大会">非公式大会</option>
+                                <option value="S1【予定】">S1【予定】</option>
+                            </select>
+                        </div>
+                        <div>
                             <label for="name_4" class="label-text">イベント名</span></label>
                             <input type="text" id="name_4" name="name_4" required class="input-field">
                         </div>
@@ -589,6 +622,14 @@
                     </summary>
                     <div class="card-content">
                         <input type="hidden" name="eventNum_5" value="5">
+                        <div>
+                            <label for="type_5" class="label-text">イベントタイプ</label>
+                            <select id="type_5" name="type_5" class="input-field">
+                                <option value="交流会" selected>交流会</option>
+                                <option value="非公式大会">非公式大会</option>
+                                <option value="S1【予定】">S1【予定】</option>
+                            </select>
+                        </div>
                         <div>
                             <label for="name_5" class="label-text">イベント名</span></label>
                             <input type="text" id="name_5" name="name_5" required class="input-field">
@@ -678,10 +719,43 @@
     const urlParams = new URLSearchParams(window.location.search);
     const urlId = urlParams.get('id');
     const CURRENT_OWNER_ID = urlId ? urlId : '@TEST'; 
+    const TYPE_COLORS = {
+        'S1【予定】': '#97f3f3',
+        'default': '#A0FA8D' 
+    };
     
     document.getElementById('ownerIdDisplay').textContent = CURRENT_OWNER_ID; 
     
     const defaultFee = '参加費：無料';
+
+    function updateCardBorderColor(num) {
+        const typeSelect = document.getElementById(`type_${num}`);
+        const cardTitleWrapper = document.querySelector(`#card_${num} .card-title-wrapper`);
+        
+        if (typeSelect && cardTitleWrapper) {
+            const selectedType = typeSelect.value;
+            const color = TYPE_COLORS[selectedType] || TYPE_COLORS['default'];
+            cardTitleWrapper.style.borderColor = color;
+        }
+    }
+
+    function setupCardTypeListeners() {
+        eventNums.forEach(num => {
+            const typeSelect = document.getElementById(`type_${num}`);
+            if (typeSelect) {
+                // 変更時のリスナー
+                typeSelect.addEventListener('change', () => {
+                    updateCardBorderColor(num);
+                    updateStatusDisplay(num); // 既存のステータス更新も実行
+                });
+                
+                // ページ読み込み時/データロード後の初期色設定
+                updateCardBorderColor(num);
+            }
+        });
+    }
+
+
 
     function showMessage(text, isError = false, isWarning = false) {
         messageDiv.innerHTML = text;
@@ -833,6 +907,7 @@
             time: document.getElementById(`time_${num}`).value || null,
             location: document.getElementById(`location_${num}`).value || null,
             fee: feeValue, 
+            type: document.getElementById(`type_${num}`).value || '交流会',
             capacity: document.getElementById(`capacity_${num}`).value || null,
             entry: document.getElementById(`entry_${num}`).value || '当日受付:なし',
             eligibility: document.getElementById(`eligibility_${num}`).value || '6歳以上(オープン)',
@@ -926,7 +1001,9 @@
                 }
             });
             cardElement.querySelectorAll('select').forEach(select => {
-                if (select.name.startsWith('eligibility_')) {
+                if (select.name.startsWith('type_')) {
+                    select.value = '交流会';
+                } else if (select.name.startsWith('eligibility_')) {
                     select.value = '6歳以上(オープン)';
                 } else if (select.name.startsWith('entry_')) {
                     select.value = '当日受付:なし';
@@ -935,6 +1012,8 @@
                 }
             });
             
+            updateCardBorderColor(num);
+
             updateStatusDisplay(num); 
             if (showConfirmation) {
                 showMessage(`イベント${num} の入力内容をクリアしました。`, false, true);
@@ -964,8 +1043,9 @@
                 name: null,
                 time: null,
                 location: null,
-                fee: '参加費：無料', 
+                fee: '参加費:無料', 
                 capacity: null,
+                type: '交流会',
                 entry: '当日受付:なし',
                 eligibility: '6歳以上(オープン)',
                 address: null,
@@ -1102,6 +1182,8 @@
             initialData[num] = event ? event : null; 
 
             if (eventNameField && event) {
+                const typeSelect = document.getElementById(`type_${num}`);
+                if (typeSelect) typeSelect.value = event.type || '交流会';
                 eventNameField.value = event.name || '';
                 document.getElementById(`date_${num}`).value = event.date || '';
                 document.getElementById(`time_${num}`).value = event.time || '';
@@ -1138,7 +1220,8 @@
         });
         
         setupStatusListeners();
-        
+        setupCardTypeListeners();
+
         const calendarLink = document.getElementById('beyCalendarLink');
         if (calendarLink) {
             calendarLink.addEventListener('click', (e) => {
