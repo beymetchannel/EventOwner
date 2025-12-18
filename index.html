@@ -244,6 +244,9 @@
             100%  {opacity: 1;
                 transform: translateY(0)}
         }
+        .hidden-url-box {
+            display: none;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -266,432 +269,105 @@
         
         <div id="eventForm">
             <div id="eventCards" class="event-cards-container">
-                <details id="card_1" class="event-card group">
-                    <summary class="card-summary">
-                        <div class="card-title-wrapper">
-                            <div class="card-date-line" id="dateDisplay_1">交流会①</div>
-                            <div class="card-name-line" id="nameDisplay_1"></div>
-                        </div>
-                        <div class="status-area">
-                            <span id="statusDisplay_1" class="status-text"></span> 
-                            <span class="chevron-icon-wrapper">
-                                <svg class="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
-                        </div>
-                    </summary>
-                    <div class="card-content">
-                        <input type="hidden" name="eventNum_1" value="1">
-                        <div>
-                            <label for="type_1" class="label-text">イベントタイプ</label>
-                            <select id="type_1" name="type_1" class="input-field">
-                                <option value="交流会" selected>交流会</option>
-                                <option value="非公式大会">非公式大会</option>
-                                <option value="S1【予定】">S1【予定】</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="name_1" class="label-text">イベント名</label>
-                            <input type="text" id="name_1" name="name_1" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="date_1" class="label-text">日付</label>
-                            <input type="date" id="date_1" name="date_1" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="time_1" class="label-text">時刻</label>
-                            <input type="time" id="time_1" name="time_1" class="input-field">
-                        </div>
-                        <div>
-                            <label for="location_1" class="label-text">会場</label>
-                            <input type="text" id="location_1" name="location_1" class="input-field">
-                        </div>
-                        <div>
-                            <label for="address_1" class="label-text">住所</label>
-                            <input type="text" id="address_1" name="address_1" class="input-field" placeholder="必ず都道府県から入力して下さい">
-                        </div>
-                        <div>
-                            <label for="capacity_1" class="label-text">定員</label>
-                            <input type="text" id="capacity_1" name="capacity_1" placeholder="例: 30名" class="input-field">
-                        </div>
-                        <div>
-                            <label for="fee_1" class="label-text">参加費</label>
-                            <input type="text" id="fee_1" name="fee_1" value="参加費：無料" class="input-field">
-                        </div>
-                        <div>
-                            <label for="eligibility_1" class="label-text">参加資格</label>
-                            <select id="eligibility_1" name="eligibility_1" class="input-field">
-                                <option value="6歳以上(オープン)" selected>6歳以上(オープン)</option>
-                                <option value="12歳未満(レギュラー)">12歳未満(レギュラー)</option>
-                                <option value="年齢制限なし">年齢制限なし</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="entry_1" class="label-text">当日受付</label>
-                            <select id="entry_1" name="entry_1" class="input-field">
-                                <option value="当日受付:なし" selected>当日受付:なし</option>
-                                <option value="当日受付:あり">当日受付:あり</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="details_1" class="label-text">募集方法</label>
-                            <textarea id="details_1" name="details_1" rows="8" class="input-field" style="height: 200px;"></textarea>
-                        </div>
-                        <div>
-                            <label for="ownerFlg_1" class="label-text">運営アカウント</label>
-                            <select id="ownerFlg_1" name="ownerFlg_1" class="input-field">
-                                <option value="true" selected>掲載する</option>
-                                <option value="false">掲載しない</option>
-                            </select>
-                        </div>
-                        <div class="button-group">
-                            <button type="button" onclick="deleteEvent(1)" id="deleteButton_1" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(1, true)" class="clear-button">Clear</button>
-                            <button type="button" onclick="registerEvent(1)" id="registerButton_1" class="register-button">登録</button>
-                        </div>
-                    </div>
-                </details>
-
-                <details id="card_2" class="event-card group">
-                    <summary class="card-summary">
-                        <div class="card-title-wrapper">
-                            <div class="card-date-line" id="dateDisplay_2">交流会②</div>
-                            <div class="card-name-line" id="nameDisplay_2"></div>
-                        </div>
-                        <div class="status-area">
-                            <span id="statusDisplay_2" class="status-text"></span> 
-                            <span class="chevron-icon-wrapper">
-                                <svg class="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
-                        </div>
-                    </summary>
-                    <div class="card-content">
-                        <input type="hidden" name="eventNum_2" value="2">
-                        <div>
-                            <label for="type_2" class="label-text">イベントタイプ</label>
-                            <select id="type_2" name="type_2" class="input-field">
-                                <option value="交流会" selected>交流会</option>
-                                <option value="非公式大会">非公式大会</option>
-                                <option value="S1【予定】">S1【予定】</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="name_2" class="label-text">イベント名</label>
-                            <input type="text" id="name_2" name="name_2" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="date_2" class="label-text">日付</label>
-                            <input type="date" id="date_2" name="date_2" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="time_2" class="label-text">時刻</label>
-                            <input type="time" id="time_2" name="time_2" class="input-field">
-                        </div>
-                        <div>
-                            <label for="location_2" class="label-text">会場</label>
-                            <input type="text" id="location_2" name="location_2" class="input-field">
-                        </div>
-                        <div>
-                            <label for="address_2" class="label-text">住所</label>
-                            <input type="text" id="address_2" name="address_2" class="input-field" placeholder="必ず都道府県から入力して下さい">
-                        </div>
-                        <div>
-                            <label for="capacity_2" class="label-text">定員</label>
-                            <input type="text" id="capacity_2" name="capacity_2" placeholder="例: 30名" class="input-field">
-                        </div>
-                        <div>
-                            <label for="fee_2" class="label-text">参加費</label>
-                            <input type="text" id="fee_2" name="fee_2" value="参加費：無料" class="input-field">
-                        </div>
-                        <div>
-                            <label for="eligibility_2" class="label-text">参加資格</label>
-                            <select id="eligibility_2" name="eligibility_2" class="input-field">
-                                <option value="6歳以上(オープン)" selected>6歳以上(オープン)</option>
-                                <option value="12歳未満(レギュラー)">12歳未満(レギュラー)</option>
-                                <option value="年齢制限なし">年齢制限なし</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="entry_2" class="label-text">当日受付</label>
-                            <select id="entry_2" name="entry_2" class="input-field">
-                                <option value="当日受付:なし" selected>当日受付:なし</option>
-                                <option value="当日受付:あり">当日受付:あり</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="details_2" class="label-text">募集方法</label>
-                            <textarea id="details_2" name="details_2" rows="8" class="input-field" style="height: 200px;"></textarea>
-                        </div>
-                        
-                        <div>
-                            <label for="ownerFlg_2" class="label-text">運営アカウント</label>
-                            <select id="ownerFlg_2" name="ownerFlg_2" class="input-field">
-                                <option value="true" selected>掲載する</option>
-                                <option value="false">掲載しない</option>
-                            </select>
-                        </div>
-                        <div class="button-group">
-                            <button type="button" onclick="deleteEvent(2)" id="deleteButton_2" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(2, true)" class="clear-button">Clear</button>
-                            <button type="button" onclick="registerEvent(2)" id="registerButton_2" class="register-button">登録</button>
-                        </div>
-                    </div>
-                </details>
-                
-                <details id="card_3" class="event-card group">
-                    <summary class="card-summary">
-                        <div class="card-title-wrapper">
-                            <div class="card-date-line" id="dateDisplay_3">交流会③</div>
-                            <div class="card-name-line" id="nameDisplay_3"></div>
-                        </div>
-                        <div class="status-area">
-                            <span id="statusDisplay_3" class="status-text"></span> 
-                            <span class="chevron-icon-wrapper">
-                                <svg class="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
-                        </div>
-                    </summary>
-                    <div class="card-content">
-                        <input type="hidden" name="eventNum_3" value="3">
-                        <div>
-                            <label for="type_3" class="label-text">イベントタイプ</label>
-                            <select id="type_3" name="type_3" class="input-field">
-                                <option value="交流会" selected>交流会</option>
-                                <option value="非公式大会">非公式大会</option>
-                                <option value="S1【予定】">S1【予定】</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="name_3" class="label-text">イベント名</span></label>
-                            <input type="text" id="name_3" name="name_3" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="date_3" class="label-text">日付</label>
-                            <input type="date" id="date_3" name="date_3" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="time_3" class="label-text">時刻</label>
-                            <input type="time" id="time_3" name="time_3" class="input-field">
-                        </div>
-                        <div>
-                            <label for="location_3" class="label-text">会場</label>
-                            <input type="text" id="location_3" name="location_3" class="input-field">
-                        </div>
-                        <div>
-                            <label for="address_3" class="label-text">住所</label>
-                            <input type="text" id="address_3" name="address_3" class="input-field" placeholder="必ず都道府県から入力して下さい">
-                        </div>
-                        <div>
-                            <label for="capacity_3" class="label-text">定員</label>
-                            <input type="text" id="capacity_3" name="capacity_3" placeholder="例: 30名" class="input-field">
-                        </div>
-                        <div>
-                            <label for="fee_3" class="label-text">参加費</label>
-                            <input type="text" id="fee_3" name="fee_3" value="参加費：無料" class="input-field">
-                        </div>
-                        <div>
-                            <label for="eligibility_3" class="label-text">参加資格</label>
-                            <select id="eligibility_3" name="eligibility_3" class="input-field">
-                                <option value="6歳以上(オープン)" selected>6歳以上(オープン)</option>
-                                <option value="12歳未満(レギュラー)">12歳未満(レギュラー)</option>
-                                <option value="年齢制限なし">年齢制限なし</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="entry_3" class="label-text">当日受付</label>
-                            <select id="entry_3" name="entry_3" class="input-field">
-                                <option value="当日受付:なし" selected>当日受付:なし</option>
-                                <option value="当日受付:あり">当日受付:あり</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="details_3" class="label-text">募集方法</label>
-                            <textarea id="details_3" name="details_3" rows="8" class="input-field" style="height: 200px;"></textarea>
-                        </div>
-                        <div>
-                            <label for="ownerFlg_3" class="label-text">運営アカウント</label>
-                            <select id="ownerFlg_3" name="ownerFlg_3" class="input-field">
-                                <option value="true" selected>掲載する</option>
-                                <option value="false">掲載しない</option>
-                            </select>
-                        </div>
-                        <div class="button-group">
-                            <button type="button" onclick="deleteEvent(3)" id="deleteButton_3" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(3, true)" class="clear-button">Clear</button>
-                            <button type="button" onclick="registerEvent(3)" id="registerButton_3" class="register-button">登録</button>
-                        </div>
-                    </div>
-                </details>
-
-                <details id="card_4" class="event-card group">
-                    <summary class="card-summary">
-                        <div class="card-title-wrapper">
-                            <div class="card-date-line" id="dateDisplay_4">交流会④</div>
-                            <div class="card-name-line" id="nameDisplay_4"></div>
-                        </div>
-                        <div class="status-area">
-                            <span id="statusDisplay_4" class="status-text"></span> 
-                            <span class="chevron-icon-wrapper">
-                                <svg class="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
-                        </div>
-                    </summary>
-                    <div class="card-content">
-                        <input type="hidden" name="eventNum_4" value="4">
-                        <div>
-                            <label for="type_4" class="label-text">イベントタイプ</label>
-                            <select id="type_4" name="type_4" class="input-field">
-                                <option value="交流会" selected>交流会</option>
-                                <option value="非公式大会">非公式大会</option>
-                                <option value="S1【予定】">S1【予定】</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="name_4" class="label-text">イベント名</span></label>
-                            <input type="text" id="name_4" name="name_4" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="date_4" class="label-text">日付</label>
-                            <input type="date" id="date_4" name="date_4" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="time_4" class="label-text">時刻</label>
-                            <input type="time" id="time_4" name="time_4" class="input-field">
-                        </div>
-                        <div>
-                            <label for="location_4" class="label-text">会場</label>
-                            <input type="text" id="location_4" name="location_4" class="input-field">
-                        </div>
-                        <div>
-                            <label for="address_4" class="label-text">住所</label>
-                            <input type="text" id="address_4" name="address_4" class="input-field" placeholder="必ず都道府県から入力して下さい">
-                        </div>
-                        <div>
-                            <label for="capacity_4" class="label-text">定員</label>
-                            <input type="text" id="capacity_4" name="capacity_4" placeholder="例: 30名" class="input-field">
-                        </div>
-                        <div>
-                            <label for="fee_4" class="label-text">参加費</label>
-                            <input type="text" id="fee_4" name="fee_4" value="参加費：無料" class="input-field">
-                        </div>
-                        <div>
-                            <label for="eligibility_4" class="label-text">参加資格</label>
-                            <select id="eligibility_4" name="eligibility_4" class="input-field">
-                                <option value="6歳以上(オープン)" selected>6歳以上(オープン)</option>
-                                <option value="12歳未満(レギュラー)">12歳未満(レギュラー)</option>
-                                <option value="年齢制限なし">年齢制限なし</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="entry_4" class="label-text">当日受付</label>
-                            <select id="entry_4" name="entry_4" class="input-field">
-                                <option value="当日受付:なし" selected>当日受付:なし</option>
-                                <option value="当日受付:あり">当日受付:あり</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="details_4" class="label-text">募集方法</label>
-                            <textarea id="details_4" name="details_4" rows="8" class="input-field" style="height: 200px;"></textarea>
-                        </div>
-                        <div>
-                            <label for="ownerFlg_4" class="label-text">運営アカウント</label>
-                            <select id="ownerFlg_4" name="ownerFlg_4" class="input-field">
-                                <option value="true" selected>掲載する</option>
-                                <option value="false">掲載しない</option>
-                            </select>
-                        </div>
-                        <div class="button-group">
-                            <button type="button" onclick="deleteEvent(4)" id="deleteButton_4" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(4, true)" class="clear-button">Clear</button>
-                            <button type="button" onclick="registerEvent(4)" id="registerButton_4" class="register-button">登録</button>
-                        </div>
-                    </div>
-                </details>
-
-                <details id="card_5" class="event-card group">
-                    <summary class="card-summary">
-                        <div class="card-title-wrapper">
-                            <div class="card-date-line" id="dateDisplay_5">交流会⑤</div>
-                            <div class="card-name-line" id="nameDisplay_5"></div>
-                        </div>
-                        <div class="status-area">
-                            <span id="statusDisplay_5" class="status-text"></span> 
-                            <span class="chevron-icon-wrapper">
-                                <svg class="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </span>
-                        </div>
-                    </summary>
-                    <div class="card-content">
-                        <input type="hidden" name="eventNum_5" value="5">
-                        <div>
-                            <label for="type_5" class="label-text">イベントタイプ</label>
-                            <select id="type_5" name="type_5" class="input-field">
-                                <option value="交流会" selected>交流会</option>
-                                <option value="非公式大会">非公式大会</option>
-                                <option value="S1【予定】">S1【予定】</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="name_5" class="label-text">イベント名</span></label>
-                            <input type="text" id="name_5" name="name_5" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="date_5" class="label-text">日付</label>
-                            <input type="date" id="date_5" name="date_5" required class="input-field">
-                        </div>
-                        <div>
-                            <label for="time_5" class="label-text">時刻</label>
-                            <input type="time" id="time_5" name="time_5" class="input-field">
-                        </div>
-                        <div>
-                            <label for="location_5" class="label-text">会場</label>
-                            <input type="text" id="location_5" name="location_5" class="input-field">
-                        </div>
-                        <div>
-                            <label for="address_5" class="label-text">住所</label>
-                            <input type="text" id="address_5" name="address_5" class="input-field" placeholder="必ず都道府県から入力して下さい">
-                        </div>
-                        <div>
-                            <label for="capacity_5" class="label-text">定員</label>
-                            <input type="text" id="capacity_5" name="capacity_5" placeholder="例: 30名" class="input-field">
-                        </div>
-                        <div>
-                            <label for="fee_5" class="label-text">参加費</label>
-                            <input type="text" id="fee_5" name="fee_5" value="参加費：無料" class="input-field">
-                        </div>
-                        <div>
-                            <label for="eligibility_5" class="label-text">参加資格</label>
-                            <select id="eligibility_5" name="eligibility_5" class="input-field">
-                                <option value="6歳以上(オープン)" selected>6歳以上(オープン)</option>
-                                <option value="12歳未満(レギュラー)">12歳未満(レギュラー)</option>
-                                <option value="年齢制限なし">年齢制限なし</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="entry_5" class="label-text">当日受付</label>
-                            <select id="entry_5" name="entry_5" class="input-field">
-                                <option value="当日受付:なし" selected>当日受付:なし</option>
-                                <option value="当日受付:あり">当日受付:あり</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="details_5" class="label-text">募集方法</label>
-                            <textarea id="details_5" name="details_5" rows="8" class="input-field" style="height: 200px;"></textarea>
-                        </div>
-                        <div>
-                            <label for="ownerFlg_5" class="label-text">運営アカウント</label>
-                            <select id="ownerFlg_5" name="ownerFlg_5" class="input-field">
-                                <option value="true" selected>掲載する</option>
-                                <option value="false">掲載しない</option>
-                            </select>
-                        </div>
-                        <div class="button-group">
-                            <button type="button" onclick="deleteEvent(5)" id="deleteButton_5" class="delete-button">削除</button>
-                            <button type="button" onclick="clearCard(5, true)" class="clear-button">Clear</button>
-                            <button type="button" onclick="registerEvent(5)" id="registerButton_5" class="register-button">登録</button>
-                        </div>
-                    </div>
-                </details>
+                <script>
+                    const cardIndices = [1, 2, 3, 4, 5];
+                    const cardSymbols = ['①', '②', '③', '④', '⑤'];
+                    
+                    cardIndices.forEach((num, index) => {
+                        document.write(`
+                        <details id="card_${num}" class="event-card group">
+                            <summary class="card-summary">
+                                <div class="card-title-wrapper">
+                                    <div class="card-date-line" id="dateDisplay_${num}">交流会${cardSymbols[index]}</div>
+                                    <div class="card-name-line" id="nameDisplay_${num}"></div>
+                                </div>
+                                <div class="status-area">
+                                    <span id="statusDisplay_${num}" class="status-text"></span> 
+                                    <span class="chevron-icon-wrapper">
+                                        <svg class="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </span>
+                                </div>
+                            </summary>
+                            <div class="card-content">
+                                <input type="hidden" name="eventNum_${num}" value="${num}">
+                                <div>
+                                    <label for="type_${num}" class="label-text">イベントタイプ</label>
+                                    <select id="type_${num}" name="type_${num}" class="input-field">
+                                        <option value="交流会" selected>交流会</option>
+                                        <option value="非公式大会">非公式大会</option>
+                                        <option value="S1【予定】">S1【予定】</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="name_${num}" class="label-text">イベント名</label>
+                                    <input type="text" id="name_${num}" name="name_${num}" required class="input-field">
+                                </div>
+                                <div>
+                                    <label for="date_${num}" class="label-text">日付</label>
+                                    <input type="date" id="date_${num}" name="date_${num}" required class="input-field">
+                                </div>
+                                <div>
+                                    <label for="time_${num}" class="label-text">時刻</label>
+                                    <input type="time" id="time_${num}" name="time_${num}" class="input-field">
+                                </div>
+                                <div>
+                                    <label for="location_${num}" class="label-text">会場</label>
+                                    <input type="text" id="location_${num}" name="location_${num}" class="input-field">
+                                </div>
+                                <div>
+                                    <label for="address_${num}" class="label-text">住所</label>
+                                    <input type="text" id="address_${num}" name="address_${num}" class="input-field" placeholder="必ず都道府県から入力して下さい">
+                                </div>
+                                <div>
+                                    <label for="capacity_${num}" class="label-text">定員</label>
+                                    <input type="text" id="capacity_${num}" name="capacity_${num}" placeholder="例: 30名" class="input-field">
+                                </div>
+                                <div>
+                                    <label for="fee_${num}" class="label-text">参加費</label>
+                                    <input type="text" id="fee_${num}" name="fee_${num}" value="参加費：無料" class="input-field">
+                                </div>
+                                <div>
+                                    <label for="eligibility_${num}" class="label-text">参加資格</label>
+                                    <select id="eligibility_${num}" name="eligibility_${num}" class="input-field">
+                                        <option value="6歳以上(オープン)" selected>6歳以上(オープン)</option>
+                                        <option value="12歳未満(レギュラー)">12歳未満(レギュラー)</option>
+                                        <option value="年齢制限なし">年齢制限なし</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="entry_${num}" class="label-text">当日受付</label>
+                                    <select id="entry_${num}" name="entry_${num}" class="input-field">
+                                        <option value="当日受付:なし" selected>当日受付:なし</option>
+                                        <option value="当日受付:あり">当日受付:あり</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="details_${num}" class="label-text">募集方法</label>
+                                    <textarea id="details_${num}" name="details_${num}" rows="8" class="input-field" style="height: 200px;"></textarea>
+                                </div>
+                                <div>
+                                    <label for="linkType_${num}" class="label-text">エントリー用リンク</label>
+                                    <select id="linkType_${num}" name="linkType_${num}" class="input-field" onchange="toggleLinkInput(${num})">
+                                        <option value="x_account" selected>Xアカウントへのリンク(DMでの受付の場合)</option>
+                                        <option value="custom_url">エントリーサイトのURL</option>
+                                        <option value="none">リンク無し(当日受付のみの場合など)</option>
+                                    </select>
+                                    <div id="urlInputContainer_${num}" class="hidden-url-box mt-2">
+                                        <input type="text" id="linkUrl_${num}" name="linkUrl_${num}" class="input-field" placeholder="https://...">
+                                    </div>
+                                </div>
+                                <div class="button-group">
+                                    <button type="button" onclick="deleteEvent(${num})" id="deleteButton_${num}" class="delete-button">削除</button>
+                                    <button type="button" onclick="clearCard(${num}, true)" class="clear-button">Clear</button>
+                                    <button type="button" onclick="registerEvent(${num})" id="registerButton_${num}" class="register-button">登録</button>
+                                </div>
+                            </div>
+                        </details>
+                        `);
+                    });
+                </script>
             </div>
+            
             <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
                 <a href="#" 
                 id="beyCalendarLink"
@@ -728,6 +404,17 @@
     
     const defaultFee = '参加費：無料';
 
+    // UI制御関数をグローバルに
+    window.toggleLinkInput = function(num) {
+        const type = document.getElementById(`linkType_${num}`).value;
+        const container = document.getElementById(`urlInputContainer_${num}`);
+        if (type === 'custom_url') {
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+        }
+    }
+
     function updateCardBorderColor(num) {
         const typeSelect = document.getElementById(`type_${num}`);
         const cardTitleWrapper = document.querySelector(`#card_${num} .card-title-wrapper`);
@@ -743,43 +430,30 @@
         eventNums.forEach(num => {
             const typeSelect = document.getElementById(`type_${num}`);
             if (typeSelect) {
-                // 変更時のリスナー
                 typeSelect.addEventListener('change', () => {
                     updateCardBorderColor(num);
-                    updateStatusDisplay(num); // 既存のステータス更新も実行
+                    updateStatusDisplay(num); 
                 });
-                
-                // ページ読み込み時/データロード後の初期色設定
                 updateCardBorderColor(num);
             }
         });
     }
 
-
-
     function showMessage(text, isError = false, isWarning = false) {
         messageDiv.innerHTML = text;
         messageDiv.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'bg-yellow-100', 'text-yellow-700');
-        
-        if (isError) {
-            messageDiv.classList.add('bg-red-100', 'text-red-700');
-        } else if (isWarning) {
-            messageDiv.classList.add('bg-yellow-100', 'text-yellow-700');
-        } else {
-            messageDiv.classList.add('bg-green-100', 'text-green-700');
-        }
+        if (isError) messageDiv.classList.add('bg-red-100', 'text-red-700');
+        else if (isWarning) messageDiv.classList.add('bg-yellow-100', 'text-yellow-700');
+        else messageDiv.classList.add('bg-green-100', 'text-green-700');
     }
 
     async function sendEmailNotification(type, num, data = null) {
         const emailApiUrl = `${supabaseUrl}/functions/v1/resend-email`;
         const recipient = 'beymet.channel@gmail.com';
-        
         try {
-            const response = await fetch(emailApiUrl, {
+            await fetch(emailApiUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ownerId: CURRENT_OWNER_ID,
                     eventNum: num,
@@ -788,29 +462,7 @@
                     recipient: recipient,
                 })
             });
-            if (!response.ok) {
-                let errorDetails = `Status: ${response.status} ${response.statusText}`;
-                try {
-                    const errorBody = await response.json();
-                    if (errorBody && errorBody.error) {
-                       errorDetails = errorBody.error;
-                    } else if (errorBody && errorBody.message) {
-                       errorDetails = errorBody.message;
-                    }
-                } catch (e) {}
-                
-                console.error(`メール送信APIエラー: ${errorDetails}`);
-                throw new Error(`API呼び出しエラーが発生しました。詳細: ${errorDetails}`);
-            } else {
-                console.log('メール通知を送信しました。');
-            }
-        } catch (error) {
-            console.error('メール通知送信中にエラーが発生しました:', error);
-            const displayError = error.message.includes('Failed to fetch') 
-                ? '通信エラーが発生しました。Edge Functionがデプロイされているか、サーバー側のCORS設定を確認してください。' 
-                : error.message;
-            showMessage(`メール通知送信中にエラーが発生しました: ${displayError}`, true);
-        }
+        } catch (error) { console.error('メール通知送信エラー:', error); }
     }
     
     function areRequiredFieldsFilled(num) {
@@ -823,63 +475,38 @@
         const isChecked = initialCheckFlgs[num];
         const isRequiredFilled = areRequiredFieldsFilled(num);
         const statusDisplay = document.getElementById(`statusDisplay_${num}`);
-        
         const nameValue = document.getElementById(`name_${num}`).value.trim();
         const dateValue = document.getElementById(`date_${num}`).value.trim();
-        
         const dateDisplay = document.querySelector(`#card_${num} summary .card-date-line`); 
         const nameDisplay = document.querySelector(`#card_${num} summary .card-name-line`); 
         const defaultTitle = `交流会${['①', '②', '③', '④', '⑤'][num - 1]}`;
 
         if (dateDisplay && nameDisplay) {
             if (nameValue !== '' && dateValue !== '') {
-                try {
-                    const dateObj = new Date(dateValue);
-                    if (!isNaN(dateObj.getTime())) { 
-                        const formattedDate = `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
-                        dateDisplay.textContent = formattedDate; 
-                        nameDisplay.textContent = nameValue; 
-                    } else {
-                        dateDisplay.textContent = defaultTitle; 
-                        nameDisplay.textContent = ''; 
-                    }
-                } catch (e) {
-                    dateDisplay.textContent = defaultTitle;
-                    nameDisplay.textContent = '';
+                const dateObj = new Date(dateValue);
+                if (!isNaN(dateObj.getTime())) { 
+                    dateDisplay.textContent = `${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
+                    nameDisplay.textContent = nameValue; 
+                } else {
+                    dateDisplay.textContent = defaultTitle; nameDisplay.textContent = '';
                 }
             } else {
-                dateDisplay.textContent = defaultTitle;
-                nameDisplay.textContent = '';
+                dateDisplay.textContent = defaultTitle; nameDisplay.textContent = '';
             }
         }
-
         if (!statusDisplay) return;
 
         let isPastDate = false;
         if (dateValue) {
             const eventDate = new Date(dateValue);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); 
-
-            const yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1); 
-
-            if (eventDate <= yesterday) {
-                isPastDate = true;
-            }
+            const today = new Date(); today.setHours(0, 0, 0, 0); 
+            const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1); 
+            if (eventDate <= yesterday) isPastDate = true;
         }
         
-        if (isPastDate && isChecked) {
-            statusDisplay.innerHTML = '<span class="text-red-600">🔴掲載終了</span>';
-        } else if (isChecked) {
-            statusDisplay.innerHTML = '<span class="text-green-600">🟢掲載中</span>';
-        } else {
-            if (isRequiredFilled) {
-                statusDisplay.innerHTML = '<span class="text-yellow-600">🟡未掲載</span>'; 
-            } else {
-                statusDisplay.innerHTML = '<span class="text-red-600">🔴未入力</span>';
-            }
-        }
+        if (isPastDate && isChecked) statusDisplay.innerHTML = '<span class="text-red-600">🔴掲載終了</span>';
+        else if (isChecked) statusDisplay.innerHTML = '<span class="text-green-600">🟢掲載中</span>';
+        else statusDisplay.innerHTML = isRequiredFilled ? '<span class="text-yellow-600">🟡未掲載</span>' : '<span class="text-red-600">🔴未入力</span>';
     }
 
     function setupStatusListeners() {
@@ -896,24 +523,33 @@
     }
 
     function getEventData(num) {
-        const dateInput = document.getElementById(`date_${num}`);
-        const feeValue = document.getElementById(`fee_${num}`).value;
-        
+        // エントリー用リンクの判定ロジック
+        const linkType = document.getElementById(`linkType_${num}`).value;
+        let finalLink = '';
+        if (linkType === 'x_account') {
+            const cleanId = CURRENT_OWNER_ID.replace('@', '');
+            finalLink = `https://x.com/${cleanId}`;
+        } else if (linkType === 'custom_url') {
+            finalLink = document.getElementById(`linkUrl_${num}`).value || '';
+        } else {
+            finalLink = '';
+        }
+
         return {
             owner: CURRENT_OWNER_ID,
             eventNum: num,
-            date: dateInput.value || null,
+            date: document.getElementById(`date_${num}`).value || null,
             name: document.getElementById(`name_${num}`).value || null,
             time: document.getElementById(`time_${num}`).value || null,
             location: document.getElementById(`location_${num}`).value || null,
-            fee: feeValue, 
+            fee: document.getElementById(`fee_${num}`).value, 
             type: document.getElementById(`type_${num}`).value || '交流会',
             capacity: document.getElementById(`capacity_${num}`).value || null,
             entry: document.getElementById(`entry_${num}`).value || '当日受付:なし',
             eligibility: document.getElementById(`eligibility_${num}`).value || '6歳以上(オープン)',
             address: document.getElementById(`address_${num}`).value || null,
             details: document.getElementById(`details_${num}`).value || null,
-            ownerFlg: document.getElementById(`ownerFlg_${num}`).value === 'true', 
+            link: finalLink // 保存するカラム
         };
     }
 
@@ -922,315 +558,177 @@
         for (const key in data) {
             if (key === 'owner' || key === 'eventNum') continue;
             let value = data[key];
-            if (key === 'date' || key === 'name' || key === 'time' || key === 'location' || key === 'address' || key === 'capacity' || key === 'details' || key === 'fee') {
+            if (['date','name','time','location','address','capacity','details','fee','link'].includes(key)) {
                 formatted[key] = (value === null || value === '') ? null : value.toString().trim();
-            } else if (key === 'ownerFlg') {
-                formatted[key] = !!value;
             } else {
                 formatted[key] = value;
             }
         }
-        
-        formatted.entry = formatted.entry === '当日受付:なし' ? '当日受付:なし' : formatted.entry;
-        formatted.eligibility = formatted.eligibility === '6歳以上(オープン)' ? '6歳以上(オープン)' : formatted.eligibility;
-
-        if (formatted.date === '') formatted.date = null;
-        if (formatted.name === '') formatted.name = null;
-        
         return formatted;
     }
 
     function checkIfDataChanged(num) {
         const currentData = getEventData(num);
         const initial = initialData[num];
-
         if (!initial) {
-             return Object.values(formatDataForComparison(currentData)).some(val => val !== null && val !== '参加費：無料' && val !== '当日受付:なし' && val !== '6歳以上(オープン)' && val !== true);
+             return Object.values(formatDataForComparison(currentData)).some(val => val !== null && val !== '参加費：無料' && val !== '当日受付:なし' && val !== '6歳以上(オープン)');
         }
-
         const currentFormatted = formatDataForComparison(currentData);
         const initialFormatted = formatDataForComparison(initial);
-        
         delete initialFormatted.checkFlg;
         return JSON.stringify(currentFormatted) !== JSON.stringify(initialFormatted);
     }
     
     function validateEventData(data) {
         const errors = [];
+        if (!data.name) errors.push(`「イベント名」が未入力です。`);
+        if (!data.date) errors.push(`「日付」が未入力です。`);
         
-
-        ['name', 'date'].forEach(fieldKey => {
-            if (!data[fieldKey] || data[fieldKey].toString().trim() === '') {
-                errors.push(`「${fieldKey === 'name' ? 'イベント名' : '日付'}」が未入力です。`);
-            }
-        });
-        
-        const prefectures = [
-            "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
-            "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県",
-            "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県",
-            "静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県",
-            "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県",
-            "徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県",
-            "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"
-        ];
-        const address = data.address ? data.address.trim() : '';
-        if (address && !prefectures.some(p => address.startsWith(p))) {
+        const prefectures = ["北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県","茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県","新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県","静岡県","愛知県","三重県","滋賀県","京都府","大阪府","兵庫県","奈良県","和歌山県","鳥取県","島根県","岡山県","広島県","山口県","徳島県","香川県","愛媛県","高知県","福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","鹿児島県","沖縄県"];
+        if (data.address && !prefectures.some(p => data.address.trim().startsWith(p))) {
             errors.push(`住所が都道府県名から始まっていません。例: 東京都...`);
         }
-        
         return errors;
     }
 
     window.clearCard = function(num, showConfirmation = true) {
-        if (showConfirmation) {
-            const isConfirmed = confirm(`イベント${num} の入力内容をクリアします。よろしいですか？\n\n(登録ボタンもしくは削除ボタンを押すまではベイカレンダーに反映はされません)`);
-            if (!isConfirmed) {
-                showMessage(`イベント${num} のClear処理をキャンセルしました。`, false, true);
-                return;
-            }
-        }
+        if (showConfirmation && !confirm(`イベント${num} の入力内容をクリアしますか？`)) return;
 
         const cardElement = document.getElementById(`card_${num}`);
         if (cardElement) {
             cardElement.querySelectorAll('input:not([type="hidden"]), textarea').forEach(input => {
-                if (input.name.startsWith('fee_')) {
-                    input.value = defaultFee; 
-                } else {
-                    input.value = ''; 
-                }
+                input.value = input.name.startsWith('fee_') ? defaultFee : '';
             });
             cardElement.querySelectorAll('select').forEach(select => {
-                if (select.name.startsWith('type_')) {
-                    select.value = '交流会';
-                } else if (select.name.startsWith('eligibility_')) {
-                    select.value = '6歳以上(オープン)';
-                } else if (select.name.startsWith('entry_')) {
-                    select.value = '当日受付:なし';
-                } else if (select.name.startsWith('ownerFlg_')) {
-                    select.value = 'true';
-                }
+                if (select.name.startsWith('type_')) select.value = '交流会';
+                else if (select.name.startsWith('eligibility_')) select.value = '6歳以上(オープン)';
+                else if (select.name.startsWith('entry_')) select.value = '当日受付:なし';
+                else if (select.name.startsWith('linkType_')) select.value = 'x_account';
             });
-            
+            window.toggleLinkInput(num);
             updateCardBorderColor(num);
-
             updateStatusDisplay(num); 
-            if (showConfirmation) {
-                showMessage(`イベント${num} の入力内容をクリアしました。`, false, true);
-            }
+            if (showConfirmation) showMessage(`イベント${num} の入力内容をクリアしました。`, false, true);
         }
     }
 
     window.deleteEvent = async function(num) {
-        const isConfirmed = confirm(`イベント${num} をベイカレンダーから削除します。よろしいですか？\n\nこの操作は取り消せません。`);
-        if (!isConfirmed) {
-            showMessage(`削除処理をキャンセルしました。`, false, true);
-            return;
-        }
-        
-        const deleteButton = document.getElementById(`deleteButton_${num}`);
-        const originalText = deleteButton.textContent;
-        deleteButton.disabled = true;
-        deleteButton.textContent = '削除中...';
-        messageDiv.classList.add('hidden');
+        if (!confirm(`イベント${num} をベイカレンダーから削除しますか？`)) return;
+        const btn = document.getElementById(`deleteButton_${num}`);
+        btn.disabled = true; btn.textContent = '削除中...';
         
         try {
             window.clearCard(num, false); 
             const dataToClear = {
                 owner: CURRENT_OWNER_ID,
                 eventNum: num,
-                date: null,
-                name: null,
-                time: null,
-                location: null,
-                fee: '参加費:無料', 
-                capacity: null,
-                type: '交流会',
-                entry: '当日受付:なし',
-                eligibility: '6歳以上(オープン)',
-                address: null,
-                details: null,
-                checkFlg: false, 
-                ownerFlg: true,
+                date: null, name: null, time: null, location: null, fee: '参加費:無料', 
+                capacity: null, type: '交流会', entry: '当日受付:なし', eligibility: '6歳以上(オープン)',
+                address: null, details: null, checkFlg: false, link: ''
             };
-            const { error } = await supabase
-                .from('EventDB')
-                .upsert([dataToClear], { onConflict: 'owner,eventNum' });
-            if (error) {
-                throw error;
-            }
+            const { error } = await supabase.from('EventDB').upsert([dataToClear], { onConflict: 'owner,eventNum' });
+            if (error) throw error;
             
-            showMessage(`イベント${num}を削除しました。ベイカレンダーからも削除されます。`, false);
+            showMessage(`イベント${num}を削除しました。`, false);
             initialCheckFlgs[num] = false; 
             updateStatusDisplay(num);
-            
             initialData[num] = { ...dataToClear, checkFlg: false }; 
-            
-            const cardElement = document.getElementById(`card_${num}`);
-            if (cardElement && cardElement.open) {
-                cardElement.open = false;
-            }
-            
+            document.getElementById(`card_${num}`).open = false;
             await sendEmailNotification('delete', num, dataToClear);
         } catch (error) {
-            console.error(`[Event #${num} 削除Supabaseエラー]`, error);
-            let errorMessage = `イベント${num}の削除に失敗しました。<br>`;
-            if (error.message) {
-                errorMessage += `<strong>エラーメッセージ:</strong> ${error.message}`;
-            }
-            showMessage(errorMessage, true);
+            showMessage(`削除失敗: ${error.message}`, true);
         } finally {
-            deleteButton.disabled = false;
-            deleteButton.textContent = originalText;
+            btn.disabled = false; btn.textContent = '削除';
         }
     }
 
     window.registerEvent = async function(num) {
-        const registerButton = document.getElementById(`registerButton_${num}`);
-        const originalText = registerButton.textContent;
-        registerButton.disabled = true;
-        registerButton.textContent = '登録中...';
-        messageDiv.classList.add('hidden');
-
+        const btn = document.getElementById(`registerButton_${num}`);
+        btn.disabled = true; btn.textContent = '登録中...';
         const data = getEventData(num);
-        const validationErrors = validateEventData(data);
-        if (validationErrors.length > 0) {
-            const errorHtml = validationErrors.map(err => `<li>${err}</li>`).join('');
-            showMessage(`イベント${num}のデータチェックエラー:<ul class="list-disc ml-4 mt-1">${errorHtml}</ul>`, true);
-            registerButton.disabled = false;
-            registerButton.textContent = originalText;
+        const errors = validateEventData(data);
+        if (errors.length > 0) {
+            showMessage(`エラー:<ul class="list-disc ml-4">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`, true);
+            btn.disabled = false; btn.textContent = '登録';
             return;
         }
-        
         if (!checkIfDataChanged(num)) {
-            showMessage(`イベント${num}: イベント内容が既存の登録情報と変更されていません。`, false, true);
-            registerButton.disabled = false;
-            registerButton.textContent = originalText;
+            showMessage(`変更がありません。`, false, true);
+            btn.disabled = false; btn.textContent = '登録';
+            return;
+        }
+        if (!confirm(`登録してよろしいですか？`)) {
+            btn.disabled = false; btn.textContent = '登録';
             return;
         }
 
-        const isConfirmed = confirm(`イベント${num} の入力内容でベイカレンダーに反映します。よろしいですか？`);
-        if (!isConfirmed) {
-            showMessage(`イベント${num} の登録処理をキャンセルしました。`, false, true);
-            registerButton.disabled = false;
-            registerButton.textContent = originalText;
-            return;
-        }
-
-        const dataToSubmit = { 
-            ...data,
-            checkFlg: true, 
-        };
         try {
-            const { data: updatedData, error } = await supabase
+            const { data: updated, error } = await supabase
                 .from('EventDB')
-                .upsert([dataToSubmit], { onConflict: 'owner,eventNum' }) 
-                .select()
-                .single();
-            if (error) {
-                throw error;
-            }
+                .upsert([{ ...data, checkFlg: true }], { onConflict: 'owner,eventNum' }) 
+                .select().single();
+            if (error) throw error;
             
-            showMessage(`イベント${num}のデータを更新しました。上記リンクからカレンダーをご確認ください。`, false);
-            const cardElement = document.getElementById(`card_${num}`);
-            if (cardElement && cardElement.open) {
-                cardElement.open = false;
-            }
-
-            if (updatedData) {
-                initialCheckFlgs[num] = updatedData.checkFlg;
-                initialData[num] = updatedData; 
-                updateStatusDisplay(num); 
-            }
-            
-            await sendEmailNotification('register', num, updatedData);
+            showMessage(`イベント${num}を更新しました。`, false);
+            document.getElementById(`card_${num}`).open = false;
+            initialCheckFlgs[num] = updated.checkFlg;
+            initialData[num] = updated; 
+            updateStatusDisplay(num); 
+            await sendEmailNotification('register', num, updated);
         } catch (error) {
-            console.error(`[Event #${num} Supabaseエラー]`, error);
-            let errorMessage = `イベント${num}の登録に失敗しました。<br>`;
-            if (error.code) {
-                errorMessage += `<br><strong>エラーコード:</strong> ${error.code}`;
-            }
-            if (error.message) {
-                errorMessage += `<br><strong>DBからのメッセージ:</strong> ${error.message}`;
-            }
-            errorMessage += `<br><br>詳細なエラーはブラウザのコンソールに出力されています。ご確認ください。`;
-            showMessage(errorMessage, true);
+            showMessage(`登録失敗: ${error.message}`, true);
         } finally {
-            registerButton.disabled = false;
-            registerButton.textContent = originalText;
+            btn.disabled = false; btn.textContent = '登録';
         }
     }
     
     window.addEventListener('load', async () => {
         const { data: events, error } = await supabase
-            .from('EventDB')
-            .select('*')
-            .eq('owner', CURRENT_OWNER_ID) 
-            .in('eventNum', eventNums)
-            .order('eventNum', { ascending: true }); 
-
-
-        if (error) {
-            console.error("データロードエラー:", error);
-        }
+            .from('EventDB').select('*').eq('owner', CURRENT_OWNER_ID) 
+            .in('eventNum', eventNums).order('eventNum', { ascending: true }); 
 
         eventNums.forEach(num => {
             const event = events ? events.find(e => e.eventNum === num) : null;
-            const eventNameField = document.getElementById(`name_${num}`);
-            
             initialCheckFlgs[num] = event ? (event.checkFlg || false) : false; 
-            initialData[num] = event ? event : null; 
+            initialData[num] = event || null; 
 
-            if (eventNameField && event) {
-                const typeSelect = document.getElementById(`type_${num}`);
-                if (typeSelect) typeSelect.value = event.type || '交流会';
-                eventNameField.value = event.name || '';
+            if (event) {
+                document.getElementById(`type_${num}`).value = event.type || '交流会';
+                document.getElementById(`name_${num}`).value = event.name || '';
                 document.getElementById(`date_${num}`).value = event.date || '';
                 document.getElementById(`time_${num}`).value = event.time || '';
                 document.getElementById(`location_${num}`).value = event.location || '';
-                
-                const feeInput = document.getElementById(`fee_${num}`);
-                if (event.fee !== null && event.fee !== undefined) {
-                    feeInput.value = event.fee;
-                } else {
-                    feeInput.value = defaultFee;
-                }
-
+                document.getElementById(`fee_${num}`).value = event.fee || defaultFee;
                 document.getElementById(`capacity_${num}`).value = event.capacity || '';
-                
-                const eligibilitySelect = document.getElementById(`eligibility_${num}`);
-                if (eligibilitySelect) eligibilitySelect.value = event.eligibility || '6歳以上(オープン)'; 
-                
+                document.getElementById(`eligibility_${num}`).value = event.eligibility || '6歳以上(オープン)'; 
                 document.getElementById(`address_${num}`).value = event.address || '';
-                const entrySelect = document.getElementById(`entry_${num}`);
-                if (entrySelect) entrySelect.value = event.entry || '当日受付:なし'; 
-                
-                const ownerFlgSelect = document.getElementById(`ownerFlg_${num}`);
-                if (ownerFlgSelect) ownerFlgSelect.value = event.ownerFlg === true ? 'true' : 'false';
-
+                document.getElementById(`entry_${num}`).value = event.entry || '当日受付:なし'; 
                 document.getElementById(`details_${num}`).value = event.details || '';
                 
-                console.log(`EventNum ${num} のデータをロードしました。`);
-            } else if (!event) {
-                 document.getElementById(`fee_${num}`).value = defaultFee;
-                 document.getElementById(`eligibility_${num}`).value = '6歳以上(オープン)';
-                 document.getElementById(`entry_${num}`).value = '当日受付:なし';
-                 document.getElementById(`ownerFlg_${num}`).value = 'true';
+                // linkの復元ロジック
+                const linkVal = event.link || '';
+                const typeSelect = document.getElementById(`linkType_${num}`);
+                const urlInput = document.getElementById(`linkUrl_${num}`);
+                const xUrlBase = `https://x.com/${CURRENT_OWNER_ID.replace('@', '')}`;
+
+                if (linkVal === '') {
+                    typeSelect.value = 'none';
+                } else if (linkVal === xUrlBase) {
+                    typeSelect.value = 'x_account';
+                } else {
+                    typeSelect.value = 'custom_url';
+                    urlInput.value = linkVal;
+                }
+                window.toggleLinkInput(num);
             }
         });
-        
         setupStatusListeners();
         setupCardTypeListeners();
-
         const calendarLink = document.getElementById('beyCalendarLink');
         if (calendarLink) {
             calendarLink.addEventListener('click', (e) => {
                 e.preventDefault(); 
-                const baseUrl = 'https://beymetchannel.github.io/BeyCalendar/';
-                const cacheBuster = `?ts=${new Date().getTime()}`;
-                const newUrl = baseUrl + cacheBuster;
-                
-                window.open(newUrl, '_blank');
+                window.open('https://beymetchannel.github.io/BeyCalendar/?ts=' + new Date().getTime(), '_blank');
             });
         }
     });
