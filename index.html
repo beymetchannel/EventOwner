@@ -60,6 +60,13 @@
             overflow: hidden; 
             display: block;
         }
+        .owner-id-sub {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: #808080;
+            margin-top: 2px;
+        }
         .event-cards-container {
             display: flex;
             flex-direction: column;
@@ -263,6 +270,7 @@
             <div class="owner-id-wrapper">
                 <div class="flex-grow min-w-0">
                     <span id="ownerIdDisplay" class="owner-id"></span>
+                    <span id="ownerIdSub" class="owner-id-sub"></span>
                 </div>
             </div>
         </div>
@@ -294,8 +302,10 @@
                                     <label for="type_${num}" class="label-text">イベントタイプ</label>
                                     <select id="type_${num}" name="type_${num}" class="input-field">
                                         <option value="交流会" selected>交流会</option>
+                                        <option value="練習会">練習会</option>
                                         <option value="非公式大会">非公式大会</option>
                                         <option value="S1【予定】">S1【予定】</option>
+                                        <option value="アンバサダー【予定】">アンバサダー【予定】</option>
                                     </select>
                                 </div>
                                 <div>
@@ -401,8 +411,37 @@
     };
     
     document.getElementById('ownerIdDisplay').textContent = CURRENT_OWNER_ID; 
+    document.getElementById('ownerIdSub').textContent = CURRENT_OWNER_ID;
+    document.getElementById('ownerIdSub').style.display = 'none';
     
     const defaultFee = '参加費：無料';
+
+    // URLの id からXアカウントの表示名（アカウント名）を取得して主表示に、
+    // 元のidは1段下に小さいフォントで表示する
+    async function loadOwnerDisplayName() {
+        if (!urlId) return; // idが未指定(@TEST起動)の場合は従来通りIDのみ表示
+        const mainDisplay = document.getElementById('ownerIdDisplay');
+        const subDisplay = document.getElementById('ownerIdSub');
+        try {
+            const cleanId = CURRENT_OWNER_ID.replace('@', '');
+            const res = await fetch(`${supabaseUrl}/functions/v1/get-x-name?id=${encodeURIComponent(cleanId)}`);
+            if (!res.ok) throw new Error(`status ${res.status}`);
+            const json = await res.json();
+            if (json && json.name) {
+                mainDisplay.textContent = json.name;
+                subDisplay.textContent = CURRENT_OWNER_ID;
+                subDisplay.style.display = 'block';
+            } else {
+                throw new Error('アカウント名が取得できませんでした');
+            }
+        } catch (error) {
+            console.error('Xアカウント名の取得に失敗しました:', error);
+            // 失敗時は従来通りID表示のみ（主表示にIDが出ているのでサブ表示は隠す）
+            mainDisplay.textContent = CURRENT_OWNER_ID;
+            subDisplay.style.display = 'none';
+        }
+    }
+    loadOwnerDisplayName();
 
     // UI制御関数をグローバルに
     window.toggleLinkInput = function(num) {
@@ -500,8 +539,19 @@
         if (dateValue) {
             const eventDate = new Date(dateValue);
             const today = new Date(); today.setHours(0, 0, 0, 0); 
-            const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1); 
-            if (eventDate <= yesterday) isPastDate = true;
+            const typeValue = document.getElementById(`type_${num}`) ? document.getElementById(`type_${num}`).value : '';
+
+            if (typeValue === 'S1【予定】' || typeValue === 'アンバサダー【予定】') {
+                // S1【予定】・アンバサダー【予定】は、公式ページに30日前掲載されるため
+                // イベント日付基準で31日前を過ぎたら掲載終了扱いにする
+                const cutoffDate = new Date(eventDate);
+                cutoffDate.setDate(cutoffDate.getDate() - 31);
+                if (today >= cutoffDate) isPastDate = true;
+            } else {
+                // 従来通り、今日基準で1日前(=前日)を過ぎたら掲載終了扱い
+                const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+                if (eventDate <= yesterday) isPastDate = true;
+            }
         }
         
         if (isPastDate && isChecked) statusDisplay.innerHTML = '<span class="text-red-600">🔴掲載終了</span>';
@@ -735,5 +785,3 @@
 </script>
 </body>
 </html>
-
-
