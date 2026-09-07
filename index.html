@@ -234,7 +234,6 @@
             background-color: #f06163;
         }
         .message-box {
-            margin-top: 2rem;
             padding: 0.75rem;
             border-radius: 4px;
             font-size: 0.875rem;
@@ -369,6 +368,7 @@
                                         <input type="text" id="linkUrl_${num}" name="linkUrl_${num}" class="input-field" placeholder="https://...">
                                     </div>
                                 </div>
+                                <div id="cardMessage_${num}" class="message-box hidden" role="alert"></div>
                                 <div class="button-group">
                                     <button type="button" onclick="deleteEvent(${num})" id="deleteButton_${num}" class="delete-button">削除</button>
                                     <button type="button" onclick="clearCard(${num}, true)" class="clear-button">Clear</button>
@@ -391,7 +391,6 @@
                 </a>
             </div>
             
-            <div id="message" class="message-box hidden" role="alert"></div>
         </div>
     </div>
 
@@ -401,7 +400,6 @@
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5cnNzY3ZvZnVvdWZrdWpldGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMzIxMjksImV4cCI6MjA3OTYwODEyOX0.mNPIAGFKhJ65dsSllBprGYk3yZfnJXfYmDcdljW8xA4'
     );    
     
-    const messageDiv = document.getElementById('message');
     const eventNums = [1, 2, 3, 4, 5]; 
     const initialCheckFlgs = {};
     const initialData = {}; 
@@ -482,7 +480,9 @@
         });
     }
 
-    function showMessage(text, isError = false, isWarning = false) {
+    function showMessage(num, text, isError = false, isWarning = false) {
+        const messageDiv = document.getElementById(`cardMessage_${num}`);
+        if (!messageDiv) return;
         messageDiv.innerHTML = text;
         messageDiv.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'bg-yellow-100', 'text-yellow-700');
         if (isError) messageDiv.classList.add('bg-red-100', 'text-red-700');
@@ -662,7 +662,7 @@
             window.toggleLinkInput(num);
             updateCardBorderColor(num);
             updateStatusDisplay(num); 
-            if (showConfirmation) showMessage(`イベント${num} の入力内容をクリアしました。`, false, true);
+            if (showConfirmation) showMessage(num, `イベント${num} の入力内容をクリアしました。`, false, true);
         }
     }
 
@@ -683,14 +683,17 @@
             const { error } = await supabase.from('EventDB').upsert([dataToClear], { onConflict: 'owner,eventNum' });
             if (error) throw error;
             
-            showMessage(`イベント${num}を削除しました。`, false);
+            showMessage(num, `イベント${num}を削除しました。`, false);
             initialCheckFlgs[num] = false; 
             updateStatusDisplay(num);
             initialData[num] = { ...dataToClear, checkFlg: false }; 
-            document.getElementById(`card_${num}`).open = false;
+            setTimeout(() => {
+                const cardEl = document.getElementById(`card_${num}`);
+                if (cardEl) cardEl.open = false;
+            }, 1200);
             await sendEmailNotification('delete', num, dataToClear);
         } catch (error) {
-            showMessage(`削除失敗: ${error.message}`, true);
+            showMessage(num, `削除失敗: ${error.message}`, true);
         } finally {
             btn.disabled = false; btn.textContent = '削除';
         }
@@ -702,12 +705,12 @@
         const data = getEventData(num);
         const errors = validateEventData(data);
         if (errors.length > 0) {
-            showMessage(`エラー:<ul class="list-disc ml-4">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`, true);
+            showMessage(num, `エラー:<ul class="list-disc ml-4">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`, true);
             btn.disabled = false; btn.textContent = '登録';
             return;
         }
         if (!checkIfDataChanged(num)) {
-            showMessage(`変更がありません。`, false, true);
+            showMessage(num, `変更がありません。`, false, true);
             btn.disabled = false; btn.textContent = '登録';
             return;
         }
@@ -723,14 +726,17 @@
                 .select().single();
             if (error) throw error;
             
-            showMessage(`イベント${num}を更新しました。`, false);
-            document.getElementById(`card_${num}`).open = false;
+            showMessage(num, `イベント${num}を更新しました。`, false);
+            setTimeout(() => {
+                const cardEl = document.getElementById(`card_${num}`);
+                if (cardEl) cardEl.open = false;
+            }, 1200);
             initialCheckFlgs[num] = updated.checkFlg;
             initialData[num] = updated; 
             updateStatusDisplay(num); 
             await sendEmailNotification('register', num, updated);
         } catch (error) {
-            showMessage(`登録失敗: ${error.message}`, true);
+            showMessage(num, `登録失敗: ${error.message}`, true);
         } finally {
             btn.disabled = false; btn.textContent = '登録';
         }
